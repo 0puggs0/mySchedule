@@ -82,6 +82,7 @@ export type RootStackParamList = {
   Schedule: undefined;
   Splash: undefined,
   BottomTabsSchedule: undefined,
-  ProfessorSchedule: undefined
+  ProfessorSchedule: undefined,
+  Info: undefined
 };
   

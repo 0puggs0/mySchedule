@@ -50,31 +50,32 @@ export function Header(props: Props) {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#2C4970",
+    backgroundColor: "#131418",
     width: "100%",
     height: 150,
   },
   title: {
-    color: "white",
+    color: "#BCC1CD",
     marginTop: 75,
-    fontFamily: "AvenirNext-Medium",
-    fontSize: 35,
+    fontFamily: "Poppins-Medium",
+    fontSize: 36,
   },
   headerMenu: {
     width: '100%',
     flexDirection: "row",
     paddingHorizontal: 16,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   week: {
-    color: "white",
+    color: "rgba(84, 101, 255, 0.9)",
     overflow: "hidden",
     marginTop: 80,
-    fontSize: 17,
-    padding: 10,
-    backgroundColor: "#436A9F",
+    fontSize: 18,
+    padding: 12,
+    backgroundColor: "rgba(84, 101, 255, 0.2)",
     borderRadius: 15,
-    fontFamily: "AvenirNext-Medium",
+    fontFamily: "Poppins-SemiBold",
   },
   contentContainer: {
     flex: 1,

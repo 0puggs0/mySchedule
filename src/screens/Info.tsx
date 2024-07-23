@@ -19,8 +19,10 @@ import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
+  BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
@@ -28,7 +30,9 @@ interface ItemType {
   name: string;
   id: string
 }
+
 export function Info({ navigation }: Props) {
+  const insets = useSafeAreaInsets()
   const [groupAs, setGroupAs] = useState("");
   const group = useAppSelector((state) => state.group.value);
   const [data, setData] = useState([]);
@@ -53,7 +57,7 @@ export function Info({ navigation }: Props) {
     return newData;
   }, [searchText, filteredData]);
 
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -81,11 +85,14 @@ export function Info({ navigation }: Props) {
   );
   const handleOpenPress = () => {
     getProfessors();
-    bottomSheetRef.current?.expand();
+    bottomSheetRef.current?.present();
     
   };
 
   return (
+    <View style = {{flex: 1, paddingTop: insets.top, backgroundColor: '#131418' }}>
+      <View style = {{height: 115, alignItems: 'center', justifyContent: 'center'}}><Text style = {{textAlign: 'center',color: "rgba(255, 255, 255, 0.6)",
+    fontFamily: "Poppins-Medium", fontSize: 30}}>Личный кабинет</Text></View>
     <View style={styles.container}>
       <View style={styles.block}>
         <Text style={styles.heading}>Ваша группа:</Text>
@@ -93,7 +100,12 @@ export function Info({ navigation }: Props) {
       <View style={styles.block}>
         <Text style={styles.groupText}>{groupAs}</Text>
       </View>
-      <View style={styles.block}>
+      <View style = {styles.block}>
+      <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
+        <Text style={styles.textButton}>Расписание преподавателей</Text>
+      </TouchableOpacity>
+      </View>
+      <View>
         <TouchableOpacity
           style={styles.button}
           onPress={async () => {
@@ -104,16 +116,16 @@ export function Info({ navigation }: Props) {
           <Text style={styles.textButton}>Выйти</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
-        <Text style={styles.textButton}>Расписание преподавателей</Text>
-      </TouchableOpacity>
-      <BottomSheet
+      </View>
+      <BottomSheetModal
+        
         ref={bottomSheetRef}
         backdropComponent={renderBackdrop}
-        index={-1}
+        index={0}
         enablePanDownToClose={true}
-        snapPoints={["25%", "57%", "95%"]}
-        backgroundStyle={{ backgroundColor: "#436A9F" }}
+        snapPoints={["85%"]}
+        
+        backgroundStyle={{ backgroundColor: "#1B1D24" }}
       >
         <BottomSheetView
           style={{
@@ -124,22 +136,25 @@ export function Info({ navigation }: Props) {
         >
           <Text
             style={{
-              fontSize: 25,
+              fontSize: 24,
               textAlign: "center",
               color: "white",
-              fontFamily: "AvenirNext-Medium",
+              maxWidth: 210,
+              fontFamily: "Poppins-Bold",
             }}
           >
-            Выберите нужного преподавателя:
+            Выберите преподавателя:
           </Text>
           <TextInput
             style={{
-              width: 300,
-              height: 70,
-              backgroundColor: "#436A9F",
+              width: 290,
+              borderRadius: 8,
+              height: 60,
+              backgroundColor: "#25272F",
               textAlign: "center",
               fontSize: 20,
-              fontFamily: "AvenirNext-Medium",
+              color: 'white',
+              fontFamily: "Poppins-Medium",
               alignItems: "center",
               justifyContent: "center",
               shadowColor: "#000",
@@ -157,15 +172,19 @@ export function Info({ navigation }: Props) {
             value={searchText}
           />
           <FlatList
+          contentContainerStyle = {{paddingBottom: 200, }}
             data={filtered}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }: {item: ItemType}) => (
-              <TouchableOpacity style={styles.buttonBS} onPress={() => navigation.navigate('ProfessorSchedule', {id: item.id, name: item.name})}>
+              <TouchableOpacity style={styles.buttonBS} onPress={() => {navigation.navigate('ProfessorSchedule', {id: item.id, name: item.name})
+              bottomSheetRef?.current?.dismiss()
+              }}>
                 <Text
                   style={{
                     textAlign: "center",
                     color: "white",
-                    fontFamily: "AvenirNext-Medium",
+                    fontFamily: "Poppins-Medium",
+                    fontSize: 16
                   }}
                 >
                   {item.name}
@@ -176,81 +195,50 @@ export function Info({ navigation }: Props) {
             numColumns={2}
           />
         </BottomSheetView>
-      </BottomSheet>
+      </BottomSheetModal>
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#2C4970",
-    width: "100%",
-    height: "100%",
+    backgroundColor: "#1B1D24",
+    height: '100%',
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "column",
+    borderRadius: 32,
+    flex:1
   },
   heading: {
     color: "white",
-    fontFamily: "AvenirNext-Medium",
+    fontFamily: "Poppins-Medium",
     fontSize: 45,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
   },
   groupText: {
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
-    fontSize: 35,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    color: "rgba(255, 255, 255, 0.6)",
+    fontFamily: "Poppins-Medium",
+    fontSize: 30,
   },
   button: {
-    width: 360,
-    height: 50,
-    backgroundColor: "#436A9F",
-    borderRadius: 10,
+    width: 307,
+    height: 47,
+    backgroundColor: "#5465FF",
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
   },
   buttonBS: {
-    width: 170,
-    height: 70,
-    backgroundColor: "#2C4970",
+    width: 175,
+    height: 78,
+    backgroundColor: "#5465FF",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
     margin: 10,
   },
   textButton: {
     color: "white",
-    fontFamily: "AvenirNext-Medium",
-    fontSize: 25,
+    fontFamily: "Poppins-Medium",
+    fontSize: 20,
   },
   block: {
     marginBottom: 15,

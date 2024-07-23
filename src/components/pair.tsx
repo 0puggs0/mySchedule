@@ -18,8 +18,9 @@ interface Props {
 export function Pair(props: Props) {
   const [isPressed, setIsPressed] = useState(2);
   return (
-    <View>
+    <View style = {{backgroundColor: '#1B1D24'}}>
     <View style={styles.pair}>
+      
       <View style={styles.time}>
         <SafeAreaView>
           <Text style={styles.textTime}>{props.timeStart}</Text>
@@ -65,38 +66,39 @@ export function Pair(props: Props) {
 
 const styles = StyleSheet.create({
   pair: {
-    columnGap: 20,
+    columnGap: 16,
     flexDirection: "row",
-    alignItems: "center",
+    borderRadius: 16,
     justifyContent: "center",
-    padding: 10,
-    backgroundColor: "#436A9F",
-    marginBottom: 15,
+    padding: 30,  
+    backgroundColor: "#BCC1CD",
+    marginBottom: 20,
+    width: '100%'
 
   },
   text: {
     overflow: "hidden",
-    fontSize: 18,
+    fontSize: 19,
     height: 60,
-    fontFamily: "AvenirNext-Medium",
-    color: "white",
+    fontFamily: "Poppins-SemiBold",
+    marginBottom: 15
   },
   pressedText: {
     overflow: "hidden",
-    fontSize: 18,
-    fontFamily: "AvenirNext-Medium",
-    color: "white",
+    fontSize: 19,
+    fontFamily: "Poppins-SemiBold",
+    color: "#212525",
+    marginBottom: 15
   },
   textTime: {
     fontSize: 18,
-    fontFamily: "AvenirNext-Medium",
-    color: "white",
+    fontFamily: "Poppins-Medium",
+    color: "#212525",
   },
   time: {
-    flexDirection: "column",
+    
     fontSize: 18,
     alignItems: "center",
-    justifyContent: "center",
   },
   subProf: {
     alignItems: "center",
@@ -106,28 +108,30 @@ const styles = StyleSheet.create({
   classNum: {
     overflow: "hidden",
     textAlign: "center",
-    width: 117,
-    color: "white",
+    width: 100,
     fontSize: 17,
-    paddingLeft: 20,
-    paddingRight: 20,
+    fontFamily: "Poppins-Regular",
+    color: "white",
     paddingBottom: 7,
     paddingTop: 7,
-    fontFamily: "AvenirNext-Medium",
-    backgroundColor: "rgba(44, 73, 112, 0.9)",
+    
+    backgroundColor: "rgba(33, 37, 37, 0.9)",
     borderRadius: 10,
   },
   textAdress: {
     fontSize: 14,
-    fontFamily: "AvenirNext-Medium",
-    color: "#1c3352",
+    fontFamily: "Poppins-Regular",
+    color: "#212525",
   },
   pairInfo: {
-    width: 170,
+    width: 190,
+    justifyContent: "center",
+    borderLeftWidth: 1,
+    paddingLeft: 17
   },
   professor: {
-    fontSize: 15,
-    fontFamily: "AvenirNext-Medium",
-    color: "#1c3352",
+    fontSize: 14,
+    fontFamily: "Poppins-Regular",
+    color: "#212525",
   },
 });

@@ -18,7 +18,7 @@ const Splash = ({navigation}: Props) => {
         groupChecher()
     }, [])
   return (
-    <View style = {{width: '100%', height: '100%', backgroundColor: '#2C4970'}}>
+    <View style = {{width: '100%', height: '100%', backgroundColor: '#1B1D24'}}>
       
     </View>
   )

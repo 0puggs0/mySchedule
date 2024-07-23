@@ -27,48 +27,15 @@ export const Schedule = ({ route, navigation }:Props) => {
     }
   }, [week, day, group]);
 
- 
-
-  // function fet() {
-  //   const changedWeek = sheduleB
-  //     .map((item: Day) => {
-  //       const [day, month, year] = item.key.split(".");
-  //       const date = `${year}-${month}-${day}`;
-  //       return { ...item, week: getWeeksSince(date) };
-  //     })
-  //     .forEach((item: Day) => {
-  //       axios
-  //         .post("https://api.rosggram.ru/add-schedule", item)
-  //         .then((response) => {
-  //           console.log("Данные успешно отправлены", response.data);
-  //         })
-  //         .catch((e) =>
-  //           console.error("Ошибка при отправке данных " + e.message)
-  //         );
-  //     });
-  // }
-
-  // Функция, которая получает на вход дату и возвращает день недели
-  // function getDayOfWeek(dateString: string) {
-  //   const days = [
-  //     "Воскресенье",
-  //     "Понедельник",
-  //     "Вторник",
-  //     "Среда",
-  //     "Четверг",
-  //     "Пятница",
-  //     "Суббота",
-  //   ];
-  //   const [day, month, year] = dateString.split(".");
-  //   const formattedDate = `${year}-${month}-${day}`;
-  //   const date = new Date(formattedDate);
-  //   return days[date.getDay()];
-  // }
   return (
-    <View style={{ backgroundColor: "#2C4970", flex: 1 }}>
+    <View style={{ backgroundColor: "#1B1D24", flex: 1, paddingHorizontal: 8,}}>
+      
       <FlatList
-        ListEmptyComponent={() => <Text style = {{textAlign: 'center', fontFamily: 'AvenirNext-Medium', color: 'white', fontSize: 30}}>Сегодня пар нет</Text>}
+      style ={{paddingTop: 25}}
+      contentContainerStyle = {{paddingBottom: 25, }}
+        ListEmptyComponent={() => <Text style = {{textAlign: 'center', fontFamily: 'Poppins-Medium', color: 'white', fontSize: 30}}>Сегодня пар нет</Text>}
         data={schedule?.[days[route.name]]}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => item.timeStart}
         renderItem={({ item }) => (
           <Pair

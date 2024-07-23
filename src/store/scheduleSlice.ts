@@ -158,6 +158,17 @@ export const getProfessorSchedule = createAsyncThunk(
             break;
         }
       });
+      newProfessorSchedule.forEach(item => {
+        item.data.sort((a,b) => {
+          if (a.timeStart > b.timeStart) {
+            return 1;
+          }
+          if (a.timeStart < b.timeStart) {
+            return -1;
+          }
+          return 0;
+        })
+      })
       return newProfessorSchedule;
     } catch (e) {
       console.error("Ошибка при получении расписания преподавателя:", e);

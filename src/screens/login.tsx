@@ -15,8 +15,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSchedule } from "../store/scheduleSlice";
 import { useAppDispatch } from "../hooks/redux";
+import {useFonts} from 'expo-font'
 
 export function Login() {
+  
   const insets = useSafeAreaInsets()
 
   const navigation = useNavigation();
@@ -65,7 +67,7 @@ export function Login() {
       height: "100%",
       flexDirection: 'column',
     justifyContent: 'space-between',
-      backgroundColor: "#2C4970", paddingTop: insets.top, paddingBottom: insets.bottom}}>
+      backgroundColor: "#131418", paddingTop: insets.top, paddingBottom: insets.bottom}}>
       <View><Text style={styles.heading}>Расписание КС ПГУТИ</Text></View>
       <View style={styles.main}>
         <Text style={styles.h1}>Привет!</Text>
@@ -81,7 +83,7 @@ export function Login() {
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={() => submitGroup()}>
-          <Ionicons name="checkmark-sharp" size={32} color="#A9BED9"/>
+          <Ionicons name="checkmark-sharp" size={36} color="#A0A0A0"/>
         </TouchableOpacity>
         </View>
         <View>
@@ -99,17 +101,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   heading: {
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
+    fontSize: 16,
+    color: '#BCC1CD',
+    fontFamily: "Poppins-Medium",
   },
   input: {
     width: 300,
     height: 70,
-    backgroundColor: "#436A9F",
+    borderRadius: 8,
+    backgroundColor: "#292C34",
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 30,
+    marginBottom: 17,
     shadowColor: "#000",
         shadowOffset: {
         width: 0,
@@ -121,15 +125,15 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
+    color: "#BCC1CD",
+    fontFamily: "Poppins-Medium",
     fontSize: 20,
     
   },
   h1: {
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
-    fontSize: 55,
+    color: "rgba(255, 255, 255, 0.6)",
+    fontFamily: "Poppins-Medium",
+    fontSize: 52,
     marginBottom: 20,
     shadowColor: "#000",
         shadowOffset: {
@@ -148,7 +152,7 @@ const styles = StyleSheet.create({
   button: {
     width: 120,
     height: 50,
-    backgroundColor: "#436A9F",
+    backgroundColor: "#292C34",
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -162,9 +166,9 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
+    color: "#BCC1CD",
+    fontFamily: "Poppins-Medium",
     fontSize: 20,
-    marginBottom: 5,
+    marginBottom: 6,
   },
 });

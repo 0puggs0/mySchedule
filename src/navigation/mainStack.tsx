@@ -6,10 +6,13 @@ import Splash from "../screens/splash";
 import { RootStackParamList } from "../API/apiInterface";
 import { MyTabs } from "./topTabs";
 import { ProfessorSchedule } from "../screens/professorSchedule";
+import { Info } from "../screens/Info";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Stack = createStackNavigator<RootStackParamList>();
 export function MyStack() {
   return (
+    <BottomSheetModalProvider>
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Splash" component={Splash}/>
@@ -18,5 +21,6 @@ export function MyStack() {
         <Stack.Screen key = '123' name="ProfessorSchedule" component={ProfessorSchedule}/>
       </Stack.Navigator>
     </NavigationContainer>
+    </BottomSheetModalProvider>
   );
 }
