@@ -18,7 +18,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
     setLocalWeek(getWeeksSince(day.dateString))
   }
   const dispatch = useAppDispatch();
-  const {professorSchedule, loading} = useAppSelector(
+  const {professorSchedule, professorScheduleLoading} = useAppSelector(
     (state) => state.schedule
   );
   const week = useAppSelector((state) => state.week.week);
@@ -55,8 +55,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
   const [selectedDate, setSelectedDate] = useState("");
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleOpenPress = () => bottomSheetRef.current?.expand();
-  console.log(loading)
-  if(loading){
+  if(professorScheduleLoading){
     return (
       <View
       style={{
@@ -118,7 +117,9 @@ export function ProfessorSchedule({ navigation, route }: Props) {
           borderTopLeftRadius: 32,
         }}
       >
-        <ActivityIndicator></ActivityIndicator>
+        <View style = {{flex: 1}}>
+        <ActivityIndicator size="large"></ActivityIndicator>
+        </View>
         </View>
         </View>
     )
@@ -206,7 +207,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
             section.data.length ? (
               <View
                 style={{
-                  backgroundColor: '#BCC1CD', 
+                  
                   flexDirection: "row",
                   justifyContent: "space-between",
                   paddingHorizontal: 8,
@@ -214,8 +215,8 @@ export function ProfessorSchedule({ navigation, route }: Props) {
                   marginBottom: 15
                 }}
               >
-                <Text style={{ color: "black", fontFamily: 'Poppins-Medium', fontSize: 25}}>{section.title}</Text>
-                <Text style={{ color: "black", fontFamily: 'Poppins-SemiBold', fontSize: 21 }}>{section.data[0].date}</Text>
+                <Text style={{ color: "#BCC1CD", fontFamily: 'Poppins-Medium', fontSize: 25}}>{section.title}</Text>
+                <Text style={{ color: "#BCC1CD", fontFamily: 'Poppins-SemiBold', fontSize: 21 }}>{section.data[0].date}</Text>
               </View>
             ) : (
               <></>

@@ -15,7 +15,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSchedule } from "../store/scheduleSlice";
 import { useAppDispatch } from "../hooks/redux";
-import {useFonts} from 'expo-font'
 
 export function Login() {
   
@@ -79,7 +78,6 @@ export function Login() {
             style={styles.textInput}
             placeholder="3ИСПП-13К"
             maxLength={9}
-            multiline={false}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={() => submitGroup()}>

@@ -5,6 +5,7 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import {
+  ListProfessorSchedule,
   NewProfessorScheduleArray,
   ProfessorScheduleArrayInterface,
   ProfessorScheduleType,
@@ -15,11 +16,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDayOfWeek } from "../utils/getDayOfWeek";
 
 interface InitialValue {
-  schedule: ScheduleArrayInterface | null;
-  professorSchedule: ProfessorScheduleArrayInterface | null;
-  loading: boolean
+  schedule: ScheduleArrayInterface;
+  professorSchedule: ListProfessorSchedule[];
+  professorScheduleLoading: boolean,
+  scheduleLoading: boolean
 }
-const initialValue: InitialValue = { schedule: [], professorSchedule: [], loading: false };
+const initialValue: InitialValue = { schedule: [], professorSchedule: [], professorScheduleLoading: false, scheduleLoading: false };
 
 export const scheduleSlice = createSlice({
   name: "scheduleSlice",
@@ -27,30 +29,37 @@ export const scheduleSlice = createSlice({
   reducers: {
     setSchedule: (
       state,
-      action: PayloadAction<ScheduleArrayInterface | null>
+      action: PayloadAction<ScheduleArrayInterface>
     ) => {
       state.schedule = action.payload;
     },
     setProfessorSchedule: (
       state,
-      action: PayloadAction<ProfessorScheduleArrayInterface | null>
+      action: PayloadAction<ListProfessorSchedule[]>
     ) => {
       state.professorSchedule = action.payload;
     },
   },
   extraReducers(builder) {
     builder.addCase(getSchedule.fulfilled, (state, payload) => {
-      state.schedule = payload.payload;
+      state.schedule = payload.payload,
+      state.scheduleLoading = false
+    }),
+    builder.addCase(getSchedule.pending, (state) => {
+      state.scheduleLoading = true
+    }),
+    builder.addCase(getSchedule.rejected, (state) => {
+      state.scheduleLoading = false
     }),
       builder.addCase(getProfessorSchedule.fulfilled, (state, payload) => {
         state.professorSchedule = payload.payload;
-        state.loading = false
+        state.professorScheduleLoading = false
       }),
       builder.addCase(getProfessorSchedule.pending, (state) => {
-        state.loading = true
+        state.professorScheduleLoading = true
       }), 
       builder.addCase(getProfessorSchedule.rejected, (state) => {
-        state.loading = false
+        state.professorScheduleLoading = false
       })
   },
 });
@@ -113,6 +122,7 @@ export const getSchedule = createAsyncThunk(
       return sortSchedule;
     } catch (e) {
       console.error("Ошибка при получении расписания:", e);
+      return []
     }
   }
 );
@@ -136,7 +146,7 @@ export const getProfessorSchedule = createAsyncThunk(
         }
         return 0;
       });
-      const newProfessorSchedule: NewProfessorScheduleArray = [
+      const newProfessorSchedule: ListProfessorSchedule[] = [
         { title: "Понедельник", data: [] },
         { title: "Вторник", data: [] },
         { title: "Среда", data: [] },
@@ -180,6 +190,7 @@ export const getProfessorSchedule = createAsyncThunk(
       return newProfessorSchedule;
     } catch (e) {
       console.error("Ошибка при получении расписания преподавателя:", e);
+      return []
     }
   }
 );

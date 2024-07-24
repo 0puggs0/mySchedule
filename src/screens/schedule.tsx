@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import React, { useEffect } from "react";
 import { Pair } from "../components/pair";
 import {
@@ -13,7 +13,7 @@ import type { StackScreenProps } from '@react-navigation/stack';
 export type Props = StackScreenProps<RootStackParamList, 'Schedule'>;
 export const Schedule = ({ route, navigation }:Props) => {
   const dispatch = useAppDispatch();
-  const schedule = useAppSelector((state) => state.schedule.schedule);
+  const {schedule, scheduleLoading} = useAppSelector((state) => state.schedule);
   const week = useAppSelector((state) => state.week.week);
   const day = useAppSelector((state) => (state.week.day))
   const group = useAppSelector((state) => state.group.value)
@@ -26,7 +26,14 @@ export const Schedule = ({ route, navigation }:Props) => {
       navigation.navigate(`${day}`)
     }
   }, [week, day, group]);
+if(scheduleLoading){
+  return (
+    <View style={{ backgroundColor: "#1B1D24", flex: 1, paddingHorizontal: 8,}}>
+      <ActivityIndicator size='large'></ActivityIndicator>
+    </View>
 
+  )
+}
   return (
     <View style={{ backgroundColor: "#1B1D24", flex: 1, paddingHorizontal: 8,}}>
       
@@ -36,7 +43,7 @@ export const Schedule = ({ route, navigation }:Props) => {
         ListEmptyComponent={() => <Text style = {{textAlign: 'center', fontFamily: 'Poppins-Medium', color: 'white', fontSize: 30}}>Сегодня пар нет</Text>}
         data={schedule?.[days[route.name]]}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => item.timeStart}
+        keyExtractor={(item) => item.timeStart}
         renderItem={({ item }) => (
           <Pair
             timeStart={item.timeStart}

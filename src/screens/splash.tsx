@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import React, { useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -26,4 +26,3 @@ const Splash = ({navigation}: Props) => {
 
 export default Splash
 
-const styles = StyleSheet.create({})

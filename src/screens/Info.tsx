@@ -6,6 +6,9 @@ import React, {
   useRef,
   useState,
 } from "react";
+
+
+
 import {
   Text,
   StyleSheet,
@@ -13,6 +16,7 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  Image
 } from "react-native";
 import { useAppSelector } from "../hooks/redux";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
@@ -94,6 +98,7 @@ export function Info({ navigation }: Props) {
       <View style = {{height: 115, alignItems: 'center', justifyContent: 'center'}}><Text style = {{textAlign: 'center',color: "rgba(255, 255, 255, 0.6)",
     fontFamily: "Poppins-Medium", fontSize: 30}}>Личный кабинет</Text></View>
     <View style={styles.container}>
+      <Image style = {{height: 170, width: 170, marginBottom: 15}} source={require('../../assets/bob1.png')}></Image>
       <View style={styles.block}>
         <Text style={styles.heading}>Ваша группа:</Text>
       </View>

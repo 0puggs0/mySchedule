@@ -19,7 +19,7 @@ export interface Day {
   key: string,
   group: string,
   week: string,
-  schedule: ScheduleItem
+  schedule: Array<ScheduleItem>
 }
 
 export interface Days{
@@ -58,6 +58,11 @@ export interface ProfessorScheduleArrayInterface {
   [index: number]: Array<ProfessorScheduleItem>
 }
 
+export interface ListProfessorSchedule {
+  title:string
+  data: ProfessorScheduleItem[]
+}
+
 export interface ScheduleType {
     schedule: Array<ScheduleItem>;
   }
@@ -82,7 +87,7 @@ export type RootStackParamList = {
   Schedule: undefined;
   Splash: undefined,
   BottomTabsSchedule: undefined,
-  ProfessorSchedule: undefined,
+  ProfessorSchedule: {id: string, name: string},
   Info: undefined
 };
   
