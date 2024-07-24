@@ -17,8 +17,9 @@ import { getDayOfWeek } from "../utils/getDayOfWeek";
 interface InitialValue {
   schedule: ScheduleArrayInterface | null;
   professorSchedule: ProfessorScheduleArrayInterface | null;
+  loading: boolean
 }
-const initialValue: InitialValue = { schedule: [], professorSchedule: [] };
+const initialValue: InitialValue = { schedule: [], professorSchedule: [], loading: false };
 
 export const scheduleSlice = createSlice({
   name: "scheduleSlice",
@@ -43,7 +44,14 @@ export const scheduleSlice = createSlice({
     }),
       builder.addCase(getProfessorSchedule.fulfilled, (state, payload) => {
         state.professorSchedule = payload.payload;
-      });
+        state.loading = false
+      }),
+      builder.addCase(getProfessorSchedule.pending, (state) => {
+        state.loading = true
+      }), 
+      builder.addCase(getProfessorSchedule.rejected, (state) => {
+        state.loading = false
+      })
   },
 });
 export const { setSchedule } = scheduleSlice.actions;
@@ -109,14 +117,14 @@ export const getSchedule = createAsyncThunk(
   }
 );
 export const getProfessorSchedule = createAsyncThunk(
+
   "расписание преподавателя",
-  async (professorKey: string, payload) => {
+  async ({professorKey, week}:{professorKey: string, week: string | number}, thunkAPI) => {
+    console.log(week)
     try {
       // const group = await AsyncStorage.getItem('group')
       const response = await fetch(
-        `https://api.rosggram.ru/professorSchedule/${professorKey}/${
-          payload.getState().week.week
-        }`
+        `https://api.rosggram.ru/professorSchedule/${professorKey}/${week}`
       );
       const professorSchedule: ProfessorScheduleType = await response.json();
       professorSchedule.professors.sort((a, b) => {

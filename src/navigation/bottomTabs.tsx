@@ -1,5 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MyTabs } from "./topTabs";
+import React from "react";
 import { Info } from "../screens/Info";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 

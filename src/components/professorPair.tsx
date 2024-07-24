@@ -1,4 +1,5 @@
 import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
+import React from "react";
 
 interface Props {
   group: string;

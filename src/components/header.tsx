@@ -1,10 +1,6 @@
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, {  } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { setWeek } from "../store/weekSlice";
-import axios from "axios";
-import { groups } from "../constants/groups";
+import { useAppSelector } from "../hooks/redux";
 import dayjs from "dayjs";
 import { days } from "../constants/days";
 interface Props {

@@ -3,10 +3,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Login } from "../screens/login";
 import {BottomTabs} from "../navigation/bottomTabs";
 import Splash from "../screens/splash";
+import React from 'react'
 import { RootStackParamList } from "../API/apiInterface";
-import { MyTabs } from "./topTabs";
 import { ProfessorSchedule } from "../screens/professorSchedule";
-import { Info } from "../screens/Info";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 
 const Stack = createStackNavigator<RootStackParamList>();

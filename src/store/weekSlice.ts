@@ -2,9 +2,16 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { getWeeksSince } from "../utils/getWeekSince";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
+import { days } from "../constants/days";
+import { Day } from "../types/schedule";
+import { getDayFromData } from "../utils/getDayFromData";
 dayjs.locale('ru')
-
-const initialValue = { week: getWeeksSince(dayjs().format("YYYY-MM-DD")), date: dayjs().toString(), day: dayjs().format('dd').replace(/^(.)/, (match) => match.toUpperCase())};
+interface InitialValue {
+  day: Day,
+  week: number,
+  date: string
+}
+const initialValue: InitialValue = { week: getWeeksSince(dayjs().format("YYYY-MM-DD")), date: dayjs().toString(), day: getDayFromData()};
 export const weekSlice = createSlice({
   
   name: "weekSlice",
@@ -16,7 +23,7 @@ export const weekSlice = createSlice({
     setDate: (state, action:PayloadAction<string>) => {
       state.date = action.payload;
     },
-    setDay: (state, action:PayloadAction<string>) => {
+    setDay: (state, action:PayloadAction<Day>) => {
       state.day = action.payload;
     },
   },

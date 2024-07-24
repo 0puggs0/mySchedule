@@ -16,6 +16,7 @@ import dayjs from "dayjs";
 import { days } from "../constants/days";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { Animated, Text, TouchableOpacity, View } from "react-native";
+import { getDayFromData } from "../utils/getDayFromData";
 
 dayjs.extend(localizedFormat);
 dayjs.locale("ru");
@@ -63,7 +64,7 @@ XDate.locales["ru"] = {
 XDate.defaultLocale = "ru";
 
 const Tab = createMaterialTopTabNavigator();
-export const MyTabs = ({ route }) => {
+export const MyTabs = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const renderBackdrop = useCallback(
@@ -85,9 +86,7 @@ export const MyTabs = ({ route }) => {
     setSelectedDate(day.dateString);
     dispatch(
       setDay(
-        dayjs(day.dateString)
-          .format("dd")
-          .replace(/^(.)/, (match) => match.toUpperCase())
+        getDayFromData(day.dateString)
       )
     );
     dispatch(setWeek(getWeeksSince(day.dateString)));
@@ -101,7 +100,7 @@ export const MyTabs = ({ route }) => {
           flexDirection: "row",
           alignItems: "center",
           paddingTop: 10,
-          paddingHorizontal: 18,
+          paddingHorizontal: 20,
           backgroundColor: "#1B1D24",
           borderTopLeftRadius: 32,
           borderTopRightRadius: 32,
@@ -116,20 +115,19 @@ export const MyTabs = ({ route }) => {
           const isFocused = state.index === index;
 
           const onPress = () => {
-            // Отправляем событие tabPress
+            
             navigation.emit({
               type: "tabPress",
               target: route.key,
             });
           
-            // Переходим на экран, если он не активен
+            
             if (!isFocused) {
               navigation.navigate(route.name); 
             }
           };
           
           const onLongPress = () => {
-            // Отправляем событие tabLongPress
             navigation.emit({
               type: "tabLongPress",
               target: route.key,
@@ -159,7 +157,9 @@ export const MyTabs = ({ route }) => {
             }),
           };
           return (
-            <Animated.View style={[{ flex: 1,
+            <Animated.View 
+            key={route.name}
+            style={[{ flex: 1,
               height: 65,
               alignItems: 'center',
               justifyContent: 'center',
@@ -169,7 +169,7 @@ export const MyTabs = ({ route }) => {
               margin: 10,
            }, animatedStyle]}> 
             <TouchableOpacity
-              style = {{gap: 4}}
+              style = {{gap: 4, alignItems: 'center', }}
               accessibilityRole="button"
               accessibilityState={isFocused ? { selected: true } : {}}
               accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -280,7 +280,7 @@ export const MyTabs = ({ route }) => {
               textMonthFontFamily: "Poppins-SemiBold",
               arrowColor: "#5465FF",
               todayTextColor: "#5465FF",
-              dayTextColor: "black",
+              dayTextColor: "white",
               monthTextColor: "#BCC1CD",
               textSectionTitleColor: "#BCC1CD",
             }}
