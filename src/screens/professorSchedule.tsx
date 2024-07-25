@@ -11,6 +11,7 @@ import { Entypo } from "@expo/vector-icons";
 import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetView } from "@gorhom/bottom-sheet";
 import { Calendar, DateData } from "react-native-calendars";
 import { getWeeksSince } from "../utils/getWeekSince";
+import { colors } from "../constants/colors";
 type Props = StackScreenProps<RootStackParamList, "ProfessorSchedule">;
 export function ProfessorSchedule({ navigation, route }: Props) {
   function onDayPress(day: DateData) {
@@ -59,7 +60,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
     return (
       <View
       style={{
-        backgroundColor: "#131418",
+        backgroundColor: colors.black,
         flex: 1,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,

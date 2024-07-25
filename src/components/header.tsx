@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAppSelector } from "../hooks/redux";
 import dayjs from "dayjs";
 import { days } from "../constants/days";
+import { colors } from "../constants/colors";
 interface Props {
   title: string;
   days: string[];
@@ -46,12 +47,12 @@ export function Header(props: Props) {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#131418",
+    backgroundColor: colors.black,
     width: "100%",
     height: 150,
   },
   title: {
-    color: "#BCC1CD",
+    color: colors.gray,
     marginTop: 75,
     fontFamily: "Poppins-Medium",
     fontSize: 36,
@@ -64,12 +65,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   week: {
-    color: "rgba(84, 101, 255, 0.9)",
+    color: colors.semiPurple,
     overflow: "hidden",
     marginTop: 80,
     fontSize: 18,
     padding: 12,
-    backgroundColor: "rgba(84, 101, 255, 0.2)",
+    backgroundColor: colors.minPurple,
     borderRadius: 15,
     fontFamily: "Poppins-SemiBold",
   },

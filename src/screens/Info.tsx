@@ -6,9 +6,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-
-
-
 import {
   Text,
   StyleSheet,
@@ -16,34 +13,38 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
-  Image
+  Image,
 } from "react-native";
 import { useAppSelector } from "../hooks/redux";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import BottomSheet, {
+import {
   BottomSheetBackdrop,
   BottomSheetBackdropProps,
   BottomSheetModal,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors } from "../constants/colors";
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
 interface ItemType {
   name: string;
-  id: string
+  id: string;
 }
 
 export function Info({ navigation }: Props) {
-  const insets = useSafeAreaInsets()
+  const insets = useSafeAreaInsets();
   const [groupAs, setGroupAs] = useState("");
   const group = useAppSelector((state) => state.group.value);
   const [data, setData] = useState([]);
 
   async function getProfessors() {
     const response = await fetch("https://api.rosggram.ru/getProfessors", {
-      headers: {token: 'hHc7JIv3EMPd27w2mES5DuZ1jIU3AR1EC6fW0901AqXhuxp0cMu16THKGJuh2yBW'}
+      headers: {
+        token:
+          "hHc7JIv3EMPd27w2mES5DuZ1jIU3AR1EC6fW0901AqXhuxp0cMu16THKGJuh2yBW",
+      },
     });
     const json = await response.json();
     setFilteredData(json.professors);
@@ -85,112 +86,82 @@ export function Info({ navigation }: Props) {
         {...props}
       />
     ),
-    []
+    [],
   );
   const handleOpenPress = () => {
     getProfessors();
     bottomSheetRef.current?.present();
-    
   };
 
   return (
-    <View style = {{flex: 1, paddingTop: insets.top, backgroundColor: '#131418' }}>
-      <View style = {{height: 115, alignItems: 'center', justifyContent: 'center'}}><Text style = {{textAlign: 'center',color: "rgba(255, 255, 255, 0.6)",
-    fontFamily: "Poppins-Medium", fontSize: 30}}>Личный кабинет</Text></View>
-    <View style={styles.container}>
-      <Image style = {{height: 170, width: 170, marginBottom: 15}} source={require('../../assets/bob1.png')}></Image>
-      <View style={styles.block}>
-        <Text style={styles.heading}>Ваша группа:</Text>
+    <View
+      style={{ flex: 1, paddingTop: insets.top, backgroundColor: colors.black }}
+    >
+      <View style={styles.topHeading}>
+        <Text style={styles.topHeadingText}>Личный кабинет</Text>
       </View>
-      <View style={styles.block}>
-        <Text style={styles.groupText}>{groupAs}</Text>
-      </View>
-      <View style = {styles.block}>
-      <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
-        <Text style={styles.textButton}>Расписание преподавателей</Text>
-      </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={async () => {
-            await AsyncStorage.clear();
-            navigation.navigate("Login");
-          }}
-        >
-          <Text style={styles.textButton}>Выйти</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={styles.contentBlock}>
+        <Image
+          style={{ height: 170, width: 170, marginBottom: 15 }}
+          source={require("../../assets/bob1.png")}
+        ></Image>
+        <View style={styles.block}>
+          <Text style={styles.heading}>Ваша группа:</Text>
+        </View>
+        <View style={styles.block}>
+          <Text style={styles.groupText}>{groupAs}</Text>
+        </View>
+        <View style={styles.block}>
+          <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
+            <Text style={styles.textButton}>Расписание преподавателей</Text>
+          </TouchableOpacity>
+        </View>
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={async () => {
+              await AsyncStorage.clear();
+              navigation.navigate("Login");
+            }}
+          >
+            <Text style={styles.textButton}>Выйти</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <BottomSheetModal
-        
         ref={bottomSheetRef}
         backdropComponent={renderBackdrop}
         index={0}
         enablePanDownToClose={true}
         snapPoints={["85%"]}
-        
-        backgroundStyle={{ backgroundColor: "#1B1D24" }}
+        backgroundStyle={{ backgroundColor: colors.semiBlack }}
       >
-        <BottomSheetView
-          style={{
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 15,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 24,
-              textAlign: "center",
-              color: "white",
-              maxWidth: 210,
-              fontFamily: "Poppins-Bold",
-            }}
-          >
-            Выберите преподавателя:
-          </Text>
+        <BottomSheetView style={styles.bottomSheetContainer}>
+          <Text style={styles.bottomSheetHeading}>Выберите преподавателя:</Text>
           <TextInput
-            style={{
-              width: 290,
-              borderRadius: 8,
-              height: 60,
-              backgroundColor: "#25272F",
-              textAlign: "center",
-              fontSize: 20,
-              color: 'white',
-              fontFamily: "Poppins-Medium",
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 4,
-              },
-              shadowOpacity: 0.3,
-              shadowRadius: 4.65,
-              elevation: 8,
-            }}
+            style={styles.input}
             placeholder="Арефьев Андрей Андреевич"
             multiline={false}
             onChangeText={(text) => setSearchText(text)}
             value={searchText}
           />
           <FlatList
-          contentContainerStyle = {{paddingBottom: 200, }}
+            contentContainerStyle={{ paddingBottom: 200 }}
             data={filtered}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }: {item: ItemType}) => (
-              <TouchableOpacity style={styles.buttonBS} onPress={() => {navigation.navigate('ProfessorSchedule', {id: item.id, name: item.name})
-              bottomSheetRef?.current?.dismiss()
-              }}>
+            renderItem={({ item }: { item: ItemType }) => (
+              <TouchableOpacity
+                style={styles.buttonBS}
+                onPress={() => {
+                  navigation.navigate("ProfessorSchedule", {
+                    id: item.id,
+                    name: item.name,
+                  });
+                  bottomSheetRef?.current?.dismiss();
+                }}
+              >
                 <Text
-                  style={{
-                    textAlign: "center",
-                    color: "white",
-                    fontFamily: "Poppins-Medium",
-                    fontSize: 16
-                  }}
+                  style={styles.buttonBSText}
                 >
                   {item.name}
                 </Text>
@@ -205,28 +176,39 @@ export function Info({ navigation }: Props) {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#1B1D24",
-    height: '100%',
+  contentBlock: {
+    backgroundColor: colors.semiBlack,
+    height: "100%",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 32,
-    flex:1
+    flex: 1,
+  },
+  topHeading: {
+    height: 115,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  topHeadingText: {
+    textAlign: "center",
+    color: colors.white,
+    fontFamily: "Poppins-Medium",
+    fontSize: 30,
   },
   heading: {
-    color: "white",
+    color: colors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 45,
   },
   groupText: {
-    color: "rgba(255, 255, 255, 0.6)",
+    color: colors.semiWhite,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
   },
   button: {
     width: 307,
     height: 47,
-    backgroundColor: "#5465FF",
+    backgroundColor: colors.purple,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
@@ -234,18 +216,57 @@ const styles = StyleSheet.create({
   buttonBS: {
     width: 175,
     height: 78,
-    backgroundColor: "#5465FF",
+    backgroundColor: colors.purple,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
     margin: 10,
   },
-  textButton: {
+  buttonBSText: {
+    textAlign: "center",
     color: "white",
+    fontFamily: "Poppins-Medium",
+    fontSize: 16,
+  },
+  textButton: {
+    color: colors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
   },
   block: {
     marginBottom: 15,
+  },
+
+  bottomSheetContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 15,
+  },
+  bottomSheetHeading: {
+    fontSize: 24,
+    textAlign: "center",
+    color: colors.white,
+    maxWidth: 210,
+    fontFamily: "Poppins-Bold",
+  },
+  input: {
+    width: 290,
+    borderRadius: 8,
+    height: 60,
+    backgroundColor: "#25272F",
+    textAlign: "center",
+    fontSize: 20,
+    color: "white",
+    fontFamily: "Poppins-Medium",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
   },
 });

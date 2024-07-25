@@ -1,5 +1,6 @@
 import { TouchableWithoutFeedback, View, StyleSheet, Text } from "react-native";
 import React from "react";
+import { colors } from "../constants/colors";
 
 interface Props {
   group: string;
@@ -11,7 +12,7 @@ interface Props {
 }
 export function ProfessorPair(props: Props) {
   return (
-    <View style ={{paddingHorizontal: 8}}>
+    <View style ={styles.container}>
       <View style={styles.pair}>
         <View style={styles.time}>
           <View>
@@ -50,13 +51,17 @@ export function ProfessorPair(props: Props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 8
+  },
+  
   pair: {
     columnGap: 20,
     flexDirection: "row",
     borderRadius: 16,
     justifyContent: "center",
     padding: 30,
-    backgroundColor: "#BCC1CD",
+    backgroundColor: colors.gray,
     marginBottom: 20,
     
   },
@@ -65,12 +70,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 60,
     fontFamily: "Poppins-Medium",
-    color: "white",
+    color: colors.white
   },
   textTime: {
     fontSize: 18,
     fontFamily: "Poppins-Medium",
-    color: "#212525",
+    color: colors.textCardBlack,
   },
   time: {
     flexDirection: "column",
@@ -85,23 +90,23 @@ const styles = StyleSheet.create({
     width: 100,
     fontSize: 17,
     fontFamily: "Poppins-Regular",
-    color: "white",
+    color: colors.white,
     paddingBottom: 7,
     paddingTop: 7,
     
-    backgroundColor: "rgba(33, 37, 37, 0.9)",
+    backgroundColor: colors.classNumBlack,
     borderRadius: 10,
   },
   textAdress: {
     fontSize: 15,
     fontFamily: "Poppins-Regular",
-    color: "#212525",
+    color: colors.textCardBlack,
   },
   pairInfo: {
     width: 190,
     borderLeftWidth: 1,
     paddingLeft: 22,
-    borderColor: "#212525",
+    borderColor: colors.textCardBlack,
   },
   
 });

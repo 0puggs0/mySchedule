@@ -15,6 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSchedule } from "../store/scheduleSlice";
 import { useAppDispatch } from "../hooks/redux";
+import { colors } from "../constants/colors";
 
 export function Login() {
   
@@ -66,7 +67,7 @@ export function Login() {
       height: "100%",
       flexDirection: 'column',
     justifyContent: 'space-between',
-      backgroundColor: "#131418", paddingTop: insets.top, paddingBottom: insets.bottom}}>
+      backgroundColor: colors.black, paddingTop: insets.top, paddingBottom: insets.bottom}}>
       <View><Text style={styles.heading}>Расписание КС ПГУТИ</Text></View>
       <View style={styles.main}>
         <Text style={styles.h1}>Привет!</Text>
@@ -81,7 +82,7 @@ export function Login() {
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={() => submitGroup()}>
-          <Ionicons name="checkmark-sharp" size={36} color="#A0A0A0"/>
+          <Ionicons name="checkmark-sharp" size={36} color={colors.submitInputColor}/>
         </TouchableOpacity>
         </View>
         <View>
@@ -100,14 +101,14 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 16,
-    color: '#BCC1CD',
+    color: colors.gray,
     fontFamily: "Poppins-Medium",
   },
   input: {
     width: 300,
     height: 70,
     borderRadius: 8,
-    backgroundColor: "#292C34",
+    backgroundColor: colors.inputBlack,
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
@@ -123,13 +124,13 @@ const styles = StyleSheet.create({
   },
 
   text: {
-    color: "#BCC1CD",
+    color: colors.gray,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
     
   },
   h1: {
-    color: "rgba(255, 255, 255, 0.6)",
+    color: colors.semiWhite,
     fontFamily: "Poppins-Medium",
     fontSize: 52,
     marginBottom: 20,
@@ -144,13 +145,13 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 25,
-    color: "white",
-    fontFamily: "AvenirNext-Medium",
+    color: colors.white,
+    fontFamily: 'Poppins-SemiBold',
   },
   button: {
     width: 120,
     height: 50,
-    backgroundColor: "#292C34",
+    backgroundColor: colors.inputBlack,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
-    color: "#BCC1CD",
+    color: colors.gray,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
     marginBottom: 6,

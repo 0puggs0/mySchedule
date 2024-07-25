@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { View, Image} from 'react-native'
 import React, { useEffect } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { StackScreenProps } from '@react-navigation/stack'
@@ -18,8 +18,8 @@ const Splash = ({navigation}: Props) => {
         groupChecher()
     }, [])
   return (
-    <View style = {{width: '100%', height: '100%', backgroundColor: '#1B1D24'}}>
-      
+    <View style = {{width: '100%', height: '100%', backgroundColor: '#1B1D24', justifyContent: 'center', alignItems: 'center'}}>
+      <Image style = {{height: 170, width: 170}} source={require('../../assets/bob1.png')}></Image>
     </View>
   )
 }

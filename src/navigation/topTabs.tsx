@@ -15,8 +15,15 @@ import { getWeeksSince } from "../utils/getWeekSince";
 import dayjs from "dayjs";
 import { days } from "../constants/days";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import { Animated, Text, TouchableOpacity, View } from "react-native";
+import {
+  Animated,
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+} from "react-native";
 import { getDayFromData } from "../utils/getDayFromData";
+import { colors } from "../constants/colors";
 
 dayjs.extend(localizedFormat);
 dayjs.locale("ru");
@@ -75,7 +82,7 @@ export const MyTabs = () => {
         {...props}
       />
     ),
-    []
+    [],
   );
 
   const handleOpenPress = () => bottomSheetRef.current?.expand();
@@ -84,30 +91,14 @@ export const MyTabs = () => {
 
   const onDayPress = (day: DateData) => {
     setSelectedDate(day.dateString);
-    dispatch(
-      setDay(
-        getDayFromData(day.dateString)
-      )
-    );
+    dispatch(setDay(getDayFromData(day.dateString)));
     dispatch(setWeek(getWeeksSince(day.dateString)));
     dispatch(setDate(dayjs(day.dateString).toString()));
   };
   const dispatch = useAppDispatch();
   function MyTabBar({ state, descriptors, navigation, position }) {
     return (
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          paddingTop: 10,
-          paddingHorizontal: 20,
-          backgroundColor: "#1B1D24",
-          borderTopLeftRadius: 32,
-          borderTopRightRadius: 32,
-          borderBottomWidth: 1,
-          borderBottomColor: "#FAF9F9",
-        }}
-      >
+      <View style={styles.customTabBar}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const label = route.name;
@@ -115,18 +106,16 @@ export const MyTabs = () => {
           const isFocused = state.index === index;
 
           const onPress = () => {
-            
             navigation.emit({
               type: "tabPress",
               target: route.key,
             });
-          
-            
+
             if (!isFocused) {
-              navigation.navigate(route.name); 
+              navigation.navigate(route.name);
             }
           };
-          
+
           const onLongPress = () => {
             navigation.emit({
               type: "tabLongPress",
@@ -157,50 +146,42 @@ export const MyTabs = () => {
             }),
           };
           return (
-            <Animated.View 
-            key={route.name}
-            style={[{ flex: 1,
-              height: 65,
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 5,
-              minHeight: 10,
-              borderRadius: 10,
-              margin: 10,
-           }, animatedStyle]}> 
-            <TouchableOpacity
-              style = {{gap: 4, alignItems: 'center', }}
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              
+            <Animated.View
+              key={route.name}
+              style={[styles.customTabBarAnimatedItem, animatedStyle]}
             >
-              <Text
-                style={{
-                  color: isFocused ? "white" : "#BCC1CD",
-                  fontFamily: "Poppins-Medium",
-                  fontSize: 15,
-                }}
+              <TouchableOpacity
+                style={styles.customTabBarItem}
+                accessibilityRole="button"
+                accessibilityState={isFocused ? { selected: true } : {}}
+                accessibilityLabel={options.tabBarAccessibilityLabel}
+                testID={options.tabBarTestID}
+                onPress={onPress}
+                onLongPress={onLongPress}
               >
-                {label}
-              </Text>
-              <Text
-                style={{
-                  color: isFocused ? "white" : "#C6C0C0",
-                  fontFamily: "Poppins-SemiBold",
-                  fontSize: 19,
-                }}
-              >
-                {dayjs(date)
-                  .startOf("week")
-                  .add(days[label], "day")
-                  .format("DD")
-                  .toString()}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: isFocused ? colors.white : colors.gray,
+                    fontFamily: "Poppins-Medium",
+                    fontSize: 15,
+                  }}
+                >
+                  {label}
+                </Text>
+                <Text
+                  style={{
+                    color: isFocused ? colors.white : colors.topTabsTabBarGray,
+                    fontFamily: "Poppins-SemiBold",
+                    fontSize: 19,
+                  }}
+                >
+                  {dayjs(date)
+                    .startOf("week")
+                    .add(days[label], "day")
+                    .format("DD")
+                    .toString()}
+                </Text>
+              </TouchableOpacity>
             </Animated.View>
           );
         })}
@@ -213,31 +194,9 @@ export const MyTabs = () => {
       <Header title={"Четверг"} days={[]} handleOpenPress={handleOpenPress} />
 
       <Tab.Navigator
-        style={{ backgroundColor: "#131418" }}
+        style={{ backgroundColor: colors.black }}
         tabBar={(props) => {
           return <MyTabBar {...props} />;
-        }}
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: "#1B1D24",
-            borderTopLeftRadius: 32,
-            borderTopRightRadius: 32,
-          },
-          tabBarActiveTintColor: "red",
-          tabBarLabel(props) {
-            return <Text>12313213</Text>;
-          },
-
-          tabBarIcon(props) {
-            return <Text>123</Text>;
-          },
-
-          tabBarLabelStyle: { color: "white" },
-          tabBarItemStyle: {
-            height: 60,
-            alignItems: "center",
-            justifyContent: "center",
-          },
         }}
       >
         {Object.keys(days).map((day) => {
@@ -250,8 +209,8 @@ export const MyTabs = () => {
                     setDate(
                       dayjs(date)
                         .day(days[day] + 1)
-                        .toString()
-                    )
+                        .toString(),
+                    ),
                   );
                 },
               }}
@@ -269,20 +228,20 @@ export const MyTabs = () => {
         ref={bottomSheetRef}
         enablePanDownToClose={true}
         snapPoints={["25%", "55%"]}
-        backgroundStyle={{ backgroundColor: "#1B1D24" }}
+        backgroundStyle={{ backgroundColor: colors.semiBlack }}
       >
         <BottomSheetView>
           <Calendar
             theme={{
-              calendarBackground: "#1B1D24",
+              calendarBackground: colors.semiBlack,
               textDayFontFamily: "Poppins-Regular",
               textDayHeaderFontFamily: "Poppins-Medium",
               textMonthFontFamily: "Poppins-SemiBold",
-              arrowColor: "#5465FF",
-              todayTextColor: "#5465FF",
-              dayTextColor: "white",
-              monthTextColor: "#BCC1CD",
-              textSectionTitleColor: "#BCC1CD",
+              arrowColor: colors.purple,
+              todayTextColor: colors.purple,
+              dayTextColor: colors.white,
+              monthTextColor: colors.gray,
+              textSectionTitleColor: colors.gray,
             }}
             onDayPress={onDayPress}
             hideExtraDays={true}
@@ -290,8 +249,8 @@ export const MyTabs = () => {
               [selectedDate]: {
                 selected: true,
                 disableTouchEvent: true,
-                selectedColor: "#5465FF",
-                selectedTextColor: "white",
+                selectedColor: colors.purple,
+                selectedTextColor: colors.white,
               },
             }}
           />
@@ -300,3 +259,30 @@ export const MyTabs = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  customTabBar: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingTop: 10,
+    paddingHorizontal: 20,
+    backgroundColor: colors.semiBlack,
+    borderTopLeftRadius: 32,
+    borderTopRightRadius: 32,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.white,
+  },
+  customTabBarAnimatedItem: {
+    flex: 1,
+    height: 65,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 10,
+    borderRadius: 10,
+    margin: 10,
+  },
+  customTabBarItem: {
+    gap: 4,
+    alignItems: "center",
+  },
+});
