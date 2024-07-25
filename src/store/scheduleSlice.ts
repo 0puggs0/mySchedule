@@ -6,8 +6,6 @@ import {
 } from "@reduxjs/toolkit";
 import {
   ListProfessorSchedule,
-  NewProfessorScheduleArray,
-  ProfessorScheduleArrayInterface,
   ProfessorScheduleType,
   ScheduleArrayInterface,
   ScheduleType,

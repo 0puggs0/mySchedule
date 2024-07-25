@@ -2,7 +2,6 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { getWeeksSince } from "../utils/getWeekSince";
 import dayjs from "dayjs";
 import "dayjs/locale/ru";
-import { days } from "../constants/days";
 import { Day } from "../types/schedule";
 import { getDayFromData } from "../utils/getDayFromData";
 dayjs.locale('ru')

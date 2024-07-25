@@ -44,10 +44,6 @@ export function Login() {
       (response) => {
         if (response.status < 300) {
           AsyncStorage.setItem('group', processedInput)
-          // getSchedule().then((data) => {
-          //   if (data) {
-          //     dispatch(setSchedule(data));
-          //   }})
           return response.json().then((json) => {
             dispatch(getSchedule())
             navigation.navigate("Schedule" as never);
