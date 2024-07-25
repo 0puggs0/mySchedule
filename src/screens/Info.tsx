@@ -1,4 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Entypo from '@expo/vector-icons/Entypo';
+import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Linking } from 'react-native';
 import React, {
   useCallback,
   useEffect,
@@ -102,8 +106,8 @@ export function Info({ navigation }: Props) {
       </View>
       <View style={styles.contentBlock}>
         <Image
-          style={{ height: 220, width: 220, marginBottom: 15 }}
-          source={require("../../assets/bob1.png")}
+          style={{ height: 240, width: 260, marginBottom: 15 }}
+          source={require("../../assets/bob5.png")}
         ></Image>
         <View style={styles.block}>
           <Text style={styles.heading}>Ваша группа:</Text>
@@ -125,6 +129,17 @@ export function Info({ navigation }: Props) {
             }}
           >
             <Text style={styles.textButton}>Выйти</Text>
+          </TouchableOpacity>
+        </View>
+        <View style ={{ flexDirection: 'row', gap: 15, marginTop: 30}}>
+        <TouchableOpacity onPress={() => Linking.openURL('https://t.me/ilushablz')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
+          <FontAwesome5 name="telegram-plane" size={28} color={colors.semiWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://vk.com/kspsuti.samara')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
+          <Entypo name="vk" size={28} color={colors.semiWhite} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL('https://ks.psuti.ru/')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
+          <MaterialCommunityIcons name="web" size={28} color={colors.semiWhite} />
           </TouchableOpacity>
         </View>
       </View>
