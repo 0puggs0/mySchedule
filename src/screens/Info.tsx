@@ -102,7 +102,7 @@ export function Info({ navigation }: Props) {
       </View>
       <View style={styles.contentBlock}>
         <Image
-          style={{ height: 170, width: 170, marginBottom: 15 }}
+          style={{ height: 220, width: 220, marginBottom: 15 }}
           source={require("../../assets/bob1.png")}
         ></Image>
         <View style={styles.block}>

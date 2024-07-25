@@ -1,14 +1,24 @@
-
-import { View, Text, SectionList, TouchableOpacity, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  SectionList,
+  TouchableOpacity,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
 import { ProfessorPair } from "../components/professorPair";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import React, { useCallback, useEffect, useRef, useState, } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { getProfessorSchedule } from "../store/scheduleSlice";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../API/apiInterface";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Entypo } from "@expo/vector-icons";
-import BottomSheet, { BottomSheetBackdrop, BottomSheetBackdropProps, BottomSheetView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetBackdropProps,
+  BottomSheetView,
+} from "@gorhom/bottom-sheet";
 import { Calendar, DateData } from "react-native-calendars";
 import { getWeeksSince } from "../utils/getWeekSince";
 import { colors } from "../constants/colors";
@@ -16,19 +26,21 @@ type Props = StackScreenProps<RootStackParamList, "ProfessorSchedule">;
 export function ProfessorSchedule({ navigation, route }: Props) {
   function onDayPress(day: DateData) {
     setSelectedDate(day.dateString);
-    setLocalWeek(getWeeksSince(day.dateString))
+    setLocalWeek(getWeeksSince(day.dateString));
   }
   const dispatch = useAppDispatch();
-  const {professorSchedule, professorScheduleLoading} = useAppSelector(
-    (state) => state.schedule
+  const { professorSchedule, professorScheduleLoading } = useAppSelector(
+    (state) => state.schedule,
   );
   const week = useAppSelector((state) => state.week.week);
-  const [localWeek, setLocalWeek] = useState(week)
+  const [localWeek, setLocalWeek] = useState(week);
 
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    dispatch(getProfessorSchedule({professorKey: route.params.id, week: localWeek}));
+    dispatch(
+      getProfessorSchedule({ professorKey: route.params.id, week: localWeek }),
+    );
   }, [localWeek]);
   function formatName(fullName: string) {
     const parts = fullName.split(" ");
@@ -51,14 +63,58 @@ export function ProfessorSchedule({ navigation, route }: Props) {
         {...props}
       />
     ),
-    []
+    [],
   );
   const [selectedDate, setSelectedDate] = useState("");
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleOpenPress = () => bottomSheetRef.current?.expand();
-  if(professorScheduleLoading){
+
+  const theme = {
+    calendarBackground: colors.semiBlack,
+    textDayFontFamily: "Poppins-Regular",
+    textDayHeaderFontFamily: "Poppins-Medium",
+    textMonthFontFamily: "Poppins-SemiBold",
+    arrowColor: colors.purple,
+    todayTextColor: colors.purple,
+    dayTextColor: colors.semiWhite,
+    monthTextColor: colors.gray,
+    textSectionTitleColor: colors.white,
+  };
+
+  if (professorScheduleLoading) {
     return (
       <View
+        style={{
+          backgroundColor: colors.black,
+          flex: 1,
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
+        }}
+      >
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Info");
+            }}
+            style={styles.backButton}
+          >
+            <Entypo name="chevron-left" size={24} color={colors.gray} />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>{formatName(route.params.name)}</Text>
+          <TouchableOpacity onPress={() => handleOpenPress()}>
+            <Text style={styles.weekButton}>Неделя {localWeek}</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.contentBlock}>
+          <View style={{ flex: 1 }}>
+            <ActivityIndicator size="large"></ActivityIndicator>
+          </View>
+        </View>
+      </View>
+    );
+  }
+  return (
+    <View
       style={{
         backgroundColor: colors.black,
         flex: 1,
@@ -66,132 +122,24 @@ export function ProfessorSchedule({ navigation, route }: Props) {
         paddingBottom: insets.bottom,
       }}
     >
-      <View
-        style={{
-          height: "15%",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          paddingHorizontal: 8
-          
-        }}
-      >
+      <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => {navigation.navigate("Info")
-            
+          onPress={() => {
+            navigation.navigate("Info");
           }}
-          style={{
-            overflow: "hidden",
-            padding: 15,
-            backgroundColor: "#25272F",
-            borderRadius: 8,
-          }}
+          style={styles.backButton}
         >
-          <Entypo name="chevron-left" size={24} color="#BCC1CD" />
+          <Entypo name="chevron-left" size={24} color={colors.gray} />
         </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 25,
-            width: 200,
-            color: "white",
-            fontFamily: "Poppins-Medium",
-          }}
-        >
-          {formatName(route.params.name)}
-        </Text>
+        <Text style={styles.headerText}>{formatName(route.params.name)}</Text>
         <TouchableOpacity onPress={() => handleOpenPress()}>
-          <Text style={{ color: "rgba(84, 101, 255, 0.9)",
-    overflow: "hidden",
-    fontSize: 18,
-    padding: 12,
-    backgroundColor: "rgba(84, 101, 255, 0.2)",
-    borderRadius: 15,
-    fontFamily: "Poppins-SemiBold",}}>Неделя {localWeek}</Text>
+          <Text style={styles.weekButton}>Неделя {localWeek}</Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          height: "100%",
-          backgroundColor: "#1B1D24",
-          borderTopRightRadius: 32,
-          borderTopLeftRadius: 32,
-        }}
-      >
-        <View style = {{flex: 1}}>
-        <ActivityIndicator size="large"></ActivityIndicator>
-        </View>
-        </View>
-        </View>
-    )
-  }
-  return (
-    <View
-      style={{
-        backgroundColor: "#131418",
-        flex: 1,
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-      }}
-    >
-      <View
-        style={{
-          height: "15%",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          paddingHorizontal: 8
-          
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => {navigation.navigate("Info")
-            
-          }}
-          style={{
-            overflow: "hidden",
-            padding: 15,
-            backgroundColor: "#25272F",
-            borderRadius: 8,
-          }}
-        >
-          <Entypo name="chevron-left" size={24} color="#BCC1CD" />
-        </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: "center",
-            fontSize: 25,
-            width: 200,
-            color: "white",
-            fontFamily: "Poppins-Medium",
-          }}
-        >
-          {formatName(route.params.name)}
-        </Text>
-        <TouchableOpacity onPress={() => handleOpenPress()}>
-          <Text style={{ color: "rgba(84, 101, 255, 0.9)",
-    overflow: "hidden",
-    fontSize: 18,
-    padding: 12,
-    backgroundColor: "rgba(84, 101, 255, 0.2)",
-    borderRadius: 15,
-    fontFamily: "Poppins-SemiBold",}}>Неделя {localWeek}</Text>
-        </TouchableOpacity>
-      </View>
-      <View
-        style={{
-          height: "100%",
-          backgroundColor: "#1B1D24",
-          borderTopRightRadius: 32,
-          borderTopLeftRadius: 32,
-        }}
-      >
+      <View style={styles.contentBlock}>
         <SectionList
-          style = {{borderTopLeftRadius: 32,
-          overflow: 'hidden',
-          borderTopRightRadius: 32,
-          paddingVertical: 28}}
-          contentContainerStyle = {{paddingBottom: 135, }}
+          style={styles.contentSectionList}
+          contentContainerStyle={{ paddingBottom: 135 }}
           sections={professorSchedule}
           keyExtractor={(item, index) => index + ""}
           renderItem={({ item }) => (
@@ -207,23 +155,19 @@ export function ProfessorSchedule({ navigation, route }: Props) {
           renderSectionHeader={({ section }) =>
             section.data.length ? (
               <View
-                style={{
-                  
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  paddingHorizontal: 8,
-                  
-                  marginBottom: 15
-                }}
+                style={styles.sectionBlock}
               >
-                <Text style={{ color: "#BCC1CD", fontFamily: 'Poppins-Medium', fontSize: 25}}>{section.title}</Text>
-                <Text style={{ color: "#BCC1CD", fontFamily: 'Poppins-SemiBold', fontSize: 21 }}>{section.data[0].date}</Text>
+                <Text
+                  style={styles.sectionDay}
+                >
+                  {section.title}
+                </Text>
+                <Text style={styles.sectionDate}>{section.data[0].date}</Text>
               </View>
             ) : (
               <></>
             )
           }
-          
           showsVerticalScrollIndicator={false}
         />
       </View>
@@ -233,30 +177,20 @@ export function ProfessorSchedule({ navigation, route }: Props) {
         ref={bottomSheetRef}
         enablePanDownToClose={true}
         snapPoints={["25%", "55%"]}
-        backgroundStyle={{ backgroundColor: "#1B1D24" }}
+        backgroundStyle={{ backgroundColor: colors.semiBlack }}
       >
         <BottomSheetView>
           <Calendar
-          initialDate={selectedDate}
-            theme={{
-              calendarBackground: "#1B1D24",
-              textDayFontFamily: 'Poppins-Regular',
-              textDayHeaderFontFamily: "Poppins-Medium",
-              textMonthFontFamily: "Poppins-SemiBold",
-              arrowColor: "#5465FF",
-              todayTextColor: "#5465FF",
-              dayTextColor: "white",
-              monthTextColor: "#BCC1CD",
-              textSectionTitleColor: "#BCC1CD",
-            }}
+            initialDate={selectedDate}
+            theme={theme}
             onDayPress={onDayPress}
             hideExtraDays={true}
             markedDates={{
               [selectedDate]: {
                 selected: true,
                 disableTouchEvent: true,
-                selectedColor: "#5465FF",
-                selectedTextColor: "white",
+                selectedColor: colors.purple,
+                selectedTextColor: colors.white,
               },
             }}
           />
@@ -265,3 +199,63 @@ export function ProfessorSchedule({ navigation, route }: Props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  header: {
+    height: "15%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingHorizontal: 8,
+  },
+  backButton: {
+    overflow: "hidden",
+    padding: 15,
+    backgroundColor: colors.semiBlack,
+    borderRadius: 8,
+  },
+  headerText: {
+    textAlign: "center",
+    fontSize: 25,
+    width: 200,
+    color: colors.white,
+    fontFamily: "Poppins-Medium",
+  },
+  weekButton: {
+    color: colors.semiPurple,
+    overflow: "hidden",
+    fontSize: 18,
+    padding: 12,
+    backgroundColor: colors.minPurple,
+    borderRadius: 15,
+    fontFamily: "Poppins-SemiBold",
+  },
+  contentBlock: {
+    height: "100%",
+    backgroundColor: colors.semiBlack,
+    borderTopRightRadius: 32,
+    borderTopLeftRadius: 32,
+  },
+  contentSectionList: {
+    borderTopLeftRadius: 32,
+    overflow: "hidden",
+    borderTopRightRadius: 32,
+    paddingVertical: 28,
+  },
+  sectionBlock: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+    marginBottom: 15,
+  },
+  sectionDate: {
+    color: colors.gray,
+    fontFamily: "Poppins-SemiBold",
+    fontSize: 21,
+  },
+  sectionDay: {
+    color: colors.gray,
+    fontFamily: "Poppins-Medium",
+    fontSize: 25,
+  },
+});
