@@ -227,7 +227,7 @@ export const MyTabs = () => {
         index={-1}
         ref={bottomSheetRef}
         enablePanDownToClose={true}
-        snapPoints={["25%", "55%"]}
+        snapPoints={["25%", "50%"]}
         backgroundStyle={{ backgroundColor: colors.semiBlack }}
       >
         <BottomSheetView>

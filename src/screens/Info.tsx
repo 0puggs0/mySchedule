@@ -106,7 +106,7 @@ export function Info({ navigation }: Props) {
       </View>
       <View style={styles.contentBlock}>
         <Image
-          style={{ height: 240, width: 260, marginBottom: 15 }}
+          style={{ height: 200, width: 220, marginBottom: 15 }}
           source={require("../../assets/bob5.png")}
         ></Image>
         <View style={styles.block}>
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   heading: {
     color: colors.white,
     fontFamily: "Poppins-Medium",
-    fontSize: 45,
+    fontSize: 38,
   },
   groupText: {
     color: colors.semiWhite,

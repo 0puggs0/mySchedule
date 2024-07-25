@@ -176,7 +176,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
         index={-1}
         ref={bottomSheetRef}
         enablePanDownToClose={true}
-        snapPoints={["25%", "55%"]}
+        snapPoints={["25%", "50%"]}
         backgroundStyle={{ backgroundColor: colors.semiBlack }}
       >
         <BottomSheetView>
