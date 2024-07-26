@@ -1,8 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Entypo from '@expo/vector-icons/Entypo';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Linking } from 'react-native';
+import Entypo from "@expo/vector-icons/Entypo";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Svg, { Path } from "react-native-svg";
 import React, {
   useCallback,
   useEffect,
@@ -17,8 +17,9 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
-  Image,
+  Linking
 } from "react-native";
+
 import { useAppSelector } from "../hooks/redux";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import {
@@ -41,7 +42,6 @@ export function Info({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const [groupAs, setGroupAs] = useState("");
   const group = useAppSelector((state) => state.group.value);
-  const [data, setData] = useState([]);
 
   async function getProfessors() {
     const response = await fetch("https://api.rosggram.ru/getProfessors", {
@@ -55,15 +55,20 @@ export function Info({ navigation }: Props) {
   }
 
   const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState([]);
 
   const filtered = useMemo(() => {
-    const newData = filteredData.filter((item: ItemType) => {
-      if (item.name.toLowerCase().includes(searchText.toLowerCase())) {
-        return true;
-      }
-    });
-    return newData;
+    if(Array.isArray(filteredData)){
+      const newData = filteredData.filter((item: ItemType) => {
+        if (item.name.toLowerCase().includes(searchText.toLowerCase())) {
+          return true;
+        }
+      });
+      return newData;
+    }else {
+      return []
+    }
+    
   }, [searchText, filteredData]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -104,10 +109,16 @@ export function Info({ navigation }: Props) {
         <Text style={styles.topHeadingText}>Личный кабинет</Text>
       </View>
       <View style={styles.contentBlock}>
-        <Image
-          style={{ height: 200, width: 220, marginBottom: 15 }}
-          source={require("../../assets/bob5.png")}
-        ></Image>
+        <Svg width={247} height={223} fill="none">
+          <Path
+            fill="#5465FF"
+            d="M123.5.233.562 63.98v15.22L123.5 147.498l105.375-58.54v48.496h17.563V63.979L123.5.233Zm87.812 78.39L193.75 88.38l-70.25 39.03-70.25-39.03-17.563-9.757-12.172-6.763L123.5 20.017l99.985 51.844-12.173 6.762Z"
+          />
+          <Path
+            fill="#5465FF"
+            d="M184.969 167.443 123.5 202.019l-61.469-34.576v-36.531l-17.562-9.757v56.558l79.031 44.456 79.031-44.456v-56.558l-17.562 9.757v36.531Z"
+          />
+        </Svg>
         <View style={styles.block}>
           <Text style={styles.heading}>Ваша группа:</Text>
         </View>
@@ -130,15 +141,44 @@ export function Info({ navigation }: Props) {
             <Text style={styles.textButton}>Выйти</Text>
           </TouchableOpacity>
         </View>
-        <View style ={{ flexDirection: 'row', gap: 15, marginTop: 30}}>
-        <TouchableOpacity onPress={() => Linking.openURL('https://t.me/ilushablz')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
-          <FontAwesome5 name="telegram-plane" size={28} color={colors.semiWhite} />
+        <View style={{ flexDirection: "row", gap: 15, marginTop: 30 }}>
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://t.me/ilushablz")}
+            style={{
+              padding: 13,
+              backgroundColor: colors.black,
+              borderRadius: 8,
+            }}
+          >
+            <FontAwesome5
+              name="telegram-plane"
+              size={28}
+              color={colors.semiWhite}
+            />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://vk.com/kspsuti.samara')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
-          <Entypo name="vk" size={28} color={colors.semiWhite} />
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://vk.com/kspsuti.samara")}
+            style={{
+              padding: 13,
+              backgroundColor: colors.black,
+              borderRadius: 8,
+            }}
+          >
+            <Entypo name="vk" size={28} color={colors.semiWhite} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => Linking.openURL('https://ks.psuti.ru/')} style = {{padding: 13, backgroundColor: colors.black, borderRadius: 8}}>
-          <MaterialCommunityIcons name="web" size={28} color={colors.semiWhite} />
+          <TouchableOpacity
+            onPress={() => Linking.openURL("https://ks.psuti.ru/")}
+            style={{
+              padding: 13,
+              backgroundColor: colors.black,
+              borderRadius: 8,
+            }}
+          >
+            <MaterialCommunityIcons
+              name="web"
+              size={28}
+              color={colors.semiWhite}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -174,11 +214,7 @@ export function Info({ navigation }: Props) {
                   bottomSheetRef?.current?.dismiss();
                 }}
               >
-                <Text
-                  style={styles.buttonBSText}
-                >
-                  {item.name}
-                </Text>
+                <Text style={styles.buttonBSText}>{item.name}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item: ItemType) => item.id}
