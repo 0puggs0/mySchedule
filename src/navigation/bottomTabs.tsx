@@ -4,6 +4,7 @@ import React from "react";
 import { Info } from "../screens/Info";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from "../constants/colors";
+import { News } from "../screens/news";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,11 @@ export function BottomTabs() {
       <Tab.Screen name="Расписание" component={MyTabs} options={{tabBarIcon: ({focused}) => {
         return (
           <MaterialCommunityIcons name="calendar-text-outline" size={30} color={focused ? colors.purple : '#88889D'}/>
+        )
+      }}}/>
+      <Tab.Screen name="News" component={News}  options={{tabBarIcon: ({focused}) => {
+        return (
+          <MaterialCommunityIcons name="newspaper-variant-outline" size={30} color={focused ? colors.purple : '#88889D'} />
         )
       }}}/>
       <Tab.Screen name="Info" component={Info}  options={{tabBarIcon: ({focused}) => {

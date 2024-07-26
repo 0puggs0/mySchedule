@@ -87,6 +87,7 @@ export type RootStackParamList = {
   Schedule: undefined;
   Splash: undefined,
   BottomTabsSchedule: undefined,
+  News: {title: string, image: string, date: string, url: string},
   ProfessorSchedule: {id: string, name: string},
   Info: undefined,
   'Пн': undefined,

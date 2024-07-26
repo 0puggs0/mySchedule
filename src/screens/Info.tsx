@@ -141,7 +141,7 @@ export function Info({ navigation }: Props) {
             <Text style={styles.textButton}>Выйти</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ flexDirection: "row", gap: 15, marginTop: 30 }}>
+        <View style={{ flexDirection: "row", gap: 23, marginTop: 30 }}>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
