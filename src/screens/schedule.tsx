@@ -8,8 +8,9 @@ import { days } from "../constants/days";
 import { getSchedule } from "../store/scheduleSlice";
 import type { StackScreenProps } from "@react-navigation/stack";
 import { colors } from "../constants/colors";
+import { Day } from "../types/schedule";
 
-export type Props = StackScreenProps<RootStackParamList, "Schedule">;
+export type Props = StackScreenProps<RootStackParamList, Day>;
 export const Schedule = ({ route, navigation }: Props) => {
   const dispatch = useAppDispatch();
   const { schedule, scheduleLoading } = useAppSelector(

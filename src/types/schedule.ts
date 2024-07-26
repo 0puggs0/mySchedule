@@ -1,3 +1,6 @@
-import { days } from "../constants/days";
-
-export type Day = keyof typeof days
+export type Day = 'Пн' |
+'Вт'|
+'Ср'|
+'Чт'|
+'Пт'|
+'Сб'

@@ -88,6 +88,12 @@ export type RootStackParamList = {
   Splash: undefined,
   BottomTabsSchedule: undefined,
   ProfessorSchedule: {id: string, name: string},
-  Info: undefined
+  Info: undefined,
+  'Пн': undefined,
+  'Вт': undefined,
+  'Ср': undefined,
+  'Чт': undefined,
+  'Пт': undefined,
+  'Сб': undefined,
 };
   

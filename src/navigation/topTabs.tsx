@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import { Schedule } from "../screens/schedule";
 import { Header } from "../components/header";
 import BottomSheet, {
@@ -24,6 +24,8 @@ import {
 } from "react-native";
 import { getDayFromData } from "../utils/getDayFromData";
 import { colors } from "../constants/colors";
+import { Day } from "../types/schedule";
+import { RootStackParamList } from "../API/apiInterface";
 
 dayjs.extend(localizedFormat);
 dayjs.locale("ru");
@@ -70,7 +72,8 @@ XDate.locales["ru"] = {
 };
 XDate.defaultLocale = "ru";
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<RootStackParamList>();
+ 
 export const MyTabs = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -96,12 +99,12 @@ export const MyTabs = () => {
     dispatch(setDate(dayjs(day.dateString).toString()));
   };
   const dispatch = useAppDispatch();
-  function MyTabBar({ state, descriptors, navigation, position }) {
+  function MyTabBar({ state, descriptors, navigation, position }: MaterialTopTabBarProps) {
     return (
       <View style={styles.customTabBar}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];
-          const label = route.name;
+          const label = route.name as Day;
 
           const isFocused = state.index === index;
 
@@ -109,6 +112,7 @@ export const MyTabs = () => {
             navigation.emit({
               type: "tabPress",
               target: route.key,
+              canPreventDefault: true
             });
 
             if (!isFocused) {
@@ -199,7 +203,7 @@ export const MyTabs = () => {
           return <MyTabBar {...props} />;
         }}
       >
-        {Object.keys(days).map((day) => {
+        {(Object.keys(days) as Day[]).map((day) => {
           return (
             <Tab.Screen
               listeners={{

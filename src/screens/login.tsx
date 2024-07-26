@@ -27,7 +27,7 @@ export function Login() {
 
   // Функция, которая преобразует значение инпута в значение, которое не чувствительно к регистру и записывает инпут в глобальное redux состояние 
   const submitGroup = () => {
-    let processedInputArray = inputValue.split("");
+    const processedInputArray = inputValue.split("");
     for (let i = 0; i < processedInputArray.length; i++) {
       if (processedInputArray[i] == "-") {
         break;

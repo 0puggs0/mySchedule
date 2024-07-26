@@ -96,7 +96,6 @@ export function Info({ navigation }: Props) {
     getProfessors();
     bottomSheetRef.current?.present();
   };
-
   return (
     <View
       style={{ flex: 1, paddingTop: insets.top, backgroundColor: colors.black }}
