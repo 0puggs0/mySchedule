@@ -22,10 +22,6 @@ const Splash = ({ navigation }: Props) => {
     <View
       style={styles.container}
     >
-      <Image
-        style={{ height: 170, width: 170 }}
-        source={require("../../assets/bob1.png")}
-      ></Image>
     </View>
   );
 };

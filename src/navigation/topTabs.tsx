@@ -99,7 +99,7 @@ export const MyTabs = () => {
     dispatch(setDate(dayjs(day.dateString).toString()));
   };
   const dispatch = useAppDispatch();
-  function MyTabBar({ state, descriptors, navigation, position }: MaterialTopTabBarProps) {
+  function MyTabBar({ state, descriptors, navigation}: MaterialTopTabBarProps) {
     return (
       <View style={styles.customTabBar}>
         {state.routes.map((route, index) => {
