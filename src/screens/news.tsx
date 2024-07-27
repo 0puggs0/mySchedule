@@ -1,7 +1,9 @@
 import React from 'react'
-import { View, StyleSheet, Text, TouchableOpacity, FlatList, Image } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity, FlatList, Image, Linking } from 'react-native'
 import { colors } from '../constants/colors';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import dayjs from 'dayjs';
+import vkPosts from '../data/vk_posts.json';
 interface Props {
     image: string,
     title: string,
@@ -9,19 +11,21 @@ interface Props {
     url: string
 }
 
+interface VkPost{
+  text: string,
+  date: string,
+  image: string,
+  url: string
+}
+
 export function News(props: Props){
-    const data = [
-        {image: 'https://mmp38.ru/upload/iblock/21a/21a6b5cf803071605b7f74c2c4f33d48.jpg', title: 'В колледже связи компания нефоров была замечена на рассвете, были привлечены спец. службы и всех выгнали...', date: '10.08.2024'},
-        {image: 'https://avatars.dzeninfra.ru/get-zen_doc/1705212/pub_5dde5e09ac2c13220551a62a_5dde758f416f067d9b432607/scale_1200', title: 'В июле 2024г. в Самаре прошла XV Международная научно- практическая конференция «Инфо- стратегия2024:Общество.Государство.Образование.»С докладом о системе воспитательной работы Колледжа связи ПГУТИ выступила начальник отдела воспитательной работы колледжа Ефимова Светлана Андреевна. ...', date: '29.08.2024'},
-        {image: 'https://www.km.ru/sites/default/files/img/news/2020/4/29/school-2051712_1920.jpg?1588134804', title: 'Сегодня, 2 июля 2024 года состоялось торжественное вручение дипломов выпускникам колледжа связи, закончивших обучение на специальностях Программирование в компьютерных системах, Информационные системы, почтовая связь, Сетевое системное администрирование и Информационные системы и программирование. ...', date: '03.08.2024'},
-        {image: 'https://ksu.edu.ru/images/NEWS%202020/9/profobuch.jpg', title: '28 июня 2024 года на площадке ТЦ "Гудок" прошла Всероссийская ярмарка трудоустройства "Работа в России. Время возможностей". С приветственным словом к участникам Ярмарки обратилась врио министра труда, занятости и миграционной политики Самарской области Ирина Владимировна Никишина. ...', date: '05.08.2024'},
-    ]
-    data.sort((a, b) => {
+  const data1: VkPost[] = vkPosts
+    data1.sort((a, b) => {
       if(a.date > b.date) {
-        return 1
+        return -1
       } 
       if(a.date < b.date) {
-        return -1
+        return 1
       }
       return 0
     })
@@ -35,13 +39,13 @@ export function News(props: Props){
         <Text style={styles.topHeadingText}>Новости</Text>
       </View>
       <View style={styles.contentBlock}>
-        <FlatList style = {{overflow: 'hidden', borderRadius: 16, marginBottom: 15}} showsVerticalScrollIndicator = {false} data = {data} renderItem={({item}) => {
+        <FlatList style = {{overflow: 'hidden', borderRadius: 16, marginBottom: 15}} showsVerticalScrollIndicator = {false} data = {data1} renderItem={({item}) => {
             return (
             <View style = {styles.card}>
                 <Image style={styles.image} source={{uri: item.image !== '' ? item.image : 'https://t-bike.ru/images/products/no-image.jpg'}}></Image>
-                <Text numberOfLines={4} style = {styles.cardTitle}>{item.title}</Text>
-                <Text style = {styles.cardDate}>{item.date}</Text>
-                <TouchableOpacity>
+                <Text numberOfLines={4} style = {styles.cardTitle}>{item.text}</Text>
+                <Text style = {styles.cardDate}>{dayjs(item.date).format('DD.MM.YYYY')}</Text>
+                <TouchableOpacity onPress= {() => Linking.openURL(item.url)}>
                     <View style ={{alignItems: 'center'}}><Text style = {styles.cardButton}>Подробнее</Text></View>
                 </TouchableOpacity>
             </View>)
