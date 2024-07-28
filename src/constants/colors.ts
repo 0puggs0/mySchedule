@@ -11,6 +11,7 @@ export const colors = {
     gray: '#BCC1CD',
     topTabsTabBarGray: '#C6C0C0',
     white: '#FFFFFF',
-    semiWhite: 'rgba(255, 255, 255, 0.6)'
+    semiWhite: 'rgba(255, 255, 255, 0.6)',
+    activeClassNum: '#D9D9D9'
 
 }
