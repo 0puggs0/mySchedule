@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { colors } from "../constants/colors";
 
+
 interface Props {
   timeStart: string;
   timeEnd: string;
@@ -17,6 +18,7 @@ interface Props {
   adress: string;
 }
 export function Pair(props: Props) {
+  
   const [isPressed, setIsPressed] = useState(2);
   return (
     <View style={styles.container}>
@@ -69,7 +71,7 @@ export function Pair(props: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: "#1B1D24" },
+  container: { backgroundColor: colors.semiBlack },
   pair: {
     columnGap: 16,
     flexDirection: "row",
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     width: 100,
     fontSize: 17,
     fontFamily: "Poppins-Regular",
-    color: colors.white,
+    color: colors.classNumTextColor,
     paddingBottom: 7,
     paddingTop: 7,
 

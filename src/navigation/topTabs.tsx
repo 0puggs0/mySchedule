@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { createMaterialTopTabNavigator, MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
+import {
+  createMaterialTopTabNavigator,
+  MaterialTopTabBarProps,
+} from "@react-navigation/material-top-tabs";
 import { Schedule } from "../screens/schedule";
 import { Header } from "../components/header";
 import BottomSheet, {
@@ -14,7 +17,6 @@ import { setDate, setDay, setWeek } from "../store/weekSlice";
 import { getWeeksSince } from "../utils/getWeekSince";
 import dayjs from "dayjs";
 import { days } from "../constants/days";
-import localizedFormat from "dayjs/plugin/localizedFormat";
 import {
   Animated,
   Text,
@@ -26,9 +28,6 @@ import { getDayFromData } from "../utils/getDayFromData";
 import { colors } from "../constants/colors";
 import { Day } from "../types/schedule";
 import { RootStackParamList } from "../API/apiInterface";
-
-dayjs.extend(localizedFormat);
-dayjs.locale("ru");
 
 XDate.locales["ru"] = {
   dayNamesShort: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
@@ -73,7 +72,7 @@ XDate.locales["ru"] = {
 XDate.defaultLocale = "ru";
 
 const Tab = createMaterialTopTabNavigator<RootStackParamList>();
- 
+
 export const MyTabs = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -93,13 +92,20 @@ export const MyTabs = () => {
   const date = useAppSelector((state) => state.week.date);
 
   const onDayPress = (day: DateData) => {
-    setSelectedDate(day.dateString);
-    dispatch(setDay(getDayFromData(day.dateString)));
-    dispatch(setWeek(getWeeksSince(day.dateString)));
-    dispatch(setDate(dayjs(day.dateString).toString()));
+    const dayOfWeek = dayjs(day.dateString).day();
+    if (dayOfWeek !== 0) {
+      setSelectedDate(day.dateString);
+      dispatch(setDay(getDayFromData(day.dateString)));
+      dispatch(setWeek(getWeeksSince(day.dateString)));
+      dispatch(setDate(dayjs(day.dateString).toString()));
+    }
   };
   const dispatch = useAppDispatch();
-  function MyTabBar({ state, descriptors, navigation}: MaterialTopTabBarProps) {
+  function MyTabBar({
+    state,
+    descriptors,
+    navigation,
+  }: MaterialTopTabBarProps) {
     return (
       <View style={styles.customTabBar}>
         {state.routes.map((route, index) => {
@@ -112,7 +118,7 @@ export const MyTabs = () => {
             navigation.emit({
               type: "tabPress",
               target: route.key,
-              canPreventDefault: true
+              canPreventDefault: true,
             });
 
             if (!isFocused) {
@@ -146,7 +152,7 @@ export const MyTabs = () => {
             ],
             backgroundColor: animationValue.interpolate({
               inputRange: [0, 1],
-              outputRange: ["#1B1D24", "#5465FF"], // Измените цвета для настройки градиента
+              outputRange: [colors.semiBlack, colors.purple], // Измените цвета для настройки градиента
             }),
           };
           return (
@@ -165,7 +171,7 @@ export const MyTabs = () => {
               >
                 <Text
                   style={{
-                    color: isFocused ? colors.white : colors.gray,
+                    color: isFocused ? colors.topTabsWhite : colors.topTabsTabBarGray,
                     fontFamily: "Poppins-Medium",
                     fontSize: 15,
                   }}
@@ -174,7 +180,7 @@ export const MyTabs = () => {
                 </Text>
                 <Text
                   style={{
-                    color: isFocused ? colors.white : colors.topTabsTabBarGray,
+                    color: isFocused ? colors.topTabsWhite : colors.topTabsTabBarGray,
                     fontFamily: "Poppins-SemiBold",
                     fontSize: 19,
                   }}
@@ -237,14 +243,14 @@ export const MyTabs = () => {
         <BottomSheetView>
           <Calendar
             theme={{
-              calendarBackground: colors.semiBlack,
+              calendarBackground: 'colors.semiBlack',
               textDayFontFamily: "Poppins-Regular",
               textDayHeaderFontFamily: "Poppins-Medium",
               textMonthFontFamily: "Poppins-SemiBold",
               arrowColor: colors.purple,
               todayTextColor: colors.purple,
               dayTextColor: colors.white,
-              monthTextColor: colors.gray,
+              monthTextColor: colors.white,
               textSectionTitleColor: colors.gray,
             }}
             onDayPress={onDayPress}

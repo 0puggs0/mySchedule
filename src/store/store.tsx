@@ -6,7 +6,7 @@ import scheduleSlice from "./scheduleSlice";
 const rootReducer = combineReducers({
   week: weekSlice.reducer,
   group: groupSlice.reducer,
-  schedule: scheduleSlice
+  schedule: scheduleSlice,
 }); 
 
 export const setupStore = () => {

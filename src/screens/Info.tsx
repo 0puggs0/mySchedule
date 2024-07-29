@@ -1,7 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Entypo from "@expo/vector-icons/Entypo";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {
+  FontAwesome5,
+  MaterialCommunityIcons,
+  AntDesign,
+} from "@expo/vector-icons";
 import Svg, { Path } from "react-native-svg";
 import React, {
   useCallback,
@@ -17,7 +20,7 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
-  Linking
+  Linking,
 } from "react-native";
 
 import { useAppSelector } from "../hooks/redux";
@@ -39,6 +42,9 @@ interface ItemType {
 }
 
 export function Info({ navigation }: Props) {
+
+
+  
   const insets = useSafeAreaInsets();
   const [groupAs, setGroupAs] = useState("");
   const group = useAppSelector((state) => state.group.value);
@@ -58,17 +64,16 @@ export function Info({ navigation }: Props) {
   const [filteredData, setFilteredData] = useState([]);
 
   const filtered = useMemo(() => {
-    if(Array.isArray(filteredData)){
+    if (Array.isArray(filteredData)) {
       const newData = filteredData.filter((item: ItemType) => {
         if (item.name.toLowerCase().includes(searchText.toLowerCase())) {
           return true;
         }
       });
       return newData;
-    }else {
-      return []
+    } else {
+      return [];
     }
-    
   }, [searchText, filteredData]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -100,6 +105,9 @@ export function Info({ navigation }: Props) {
   const handleOpenPress = () => {
     getProfessors();
     bottomSheetRef.current?.present();
+  };
+  const handleClose = () => {
+    bottomSheetRef.current?.dismiss();
   };
   return (
     <View
@@ -141,6 +149,7 @@ export function Info({ navigation }: Props) {
             <Text style={styles.textButton}>Выйти</Text>
           </TouchableOpacity>
         </View>
+        
         <View style={{ flexDirection: "row", gap: 23, marginTop: 30 }}>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
@@ -192,6 +201,9 @@ export function Info({ navigation }: Props) {
       >
         <BottomSheetView style={styles.bottomSheetContainer}>
           <Text style={styles.bottomSheetHeading}>Выберите преподавателя:</Text>
+          <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
+            <AntDesign name="close" size={23} color={colors.semiBlack} />
+          </TouchableOpacity>
           <TextInput
             style={styles.input}
             placeholder="Арефьев Андрей Андреевич"
@@ -279,7 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textButton: {
-    color: colors.white,
+    color: colors.textButtonColor,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
   },
@@ -303,10 +315,10 @@ const styles = StyleSheet.create({
     width: 290,
     borderRadius: 8,
     height: 60,
-    backgroundColor: "#25272F",
+    backgroundColor: colors.bottomSheetInputColor,
     textAlign: "center",
     fontSize: 20,
-    color: "white",
+    color: colors.white,
     fontFamily: "Poppins-Medium",
     alignItems: "center",
     justifyContent: "center",
@@ -318,5 +330,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
+  },
+  closeButton: {
+    alignSelf: "flex-end",
+    backgroundColor: colors.purple,
+    padding: 10,
+    position: "absolute",
+    right: 20,
+    borderRadius: 10,
   },
 });

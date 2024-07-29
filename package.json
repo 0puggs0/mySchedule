@@ -37,6 +37,7 @@
     "react-native-skeleton-content": "^1.0.28",
     "react-native-skeleton-placeholder": "^5.2.4",
     "react-native-svg": "15.2.0",
+    "react-native-switch": "^1.5.1",
     "react-native-tab-view": "^3.5.2",
     "react-redux": "^9.1.2",
     "xdate": "^0.8.2"

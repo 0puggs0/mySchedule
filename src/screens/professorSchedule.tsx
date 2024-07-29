@@ -26,14 +26,16 @@ import dayjs from "dayjs";
 type Props = StackScreenProps<RootStackParamList, "ProfessorSchedule">;
 export function ProfessorSchedule({ navigation, route }: Props) {
   function onDayPress(day: DateData) {
-    setSelectedDate(day.dateString);
-    setLocalWeek(getWeeksSince(day.dateString));
+    const dayOfWeek = dayjs(day.dateString).day();
+    if (dayOfWeek !== 0) {
+      setSelectedDate(day.dateString);
+      setLocalWeek(getWeeksSince(day.dateString));
+    }
   }
   const dispatch = useAppDispatch();
   const { professorSchedule, professorScheduleLoading } = useAppSelector(
     (state) => state.schedule,
   );
-  const week = useAppSelector((state) => state.week.week);
   const [localWeek, setLocalWeek] = useState(getWeeksSince(dayjs().toString()));
 
   const insets = useSafeAreaInsets();
@@ -77,9 +79,9 @@ export function ProfessorSchedule({ navigation, route }: Props) {
     textMonthFontFamily: "Poppins-SemiBold",
     arrowColor: colors.purple,
     todayTextColor: colors.purple,
-    dayTextColor: colors.semiWhite,
-    monthTextColor: colors.gray,
-    textSectionTitleColor: colors.white,
+    dayTextColor: colors.white,
+    monthTextColor: colors.white,
+    textSectionTitleColor: colors.gray,
   };
 
   if (professorScheduleLoading) {
@@ -155,14 +157,8 @@ export function ProfessorSchedule({ navigation, route }: Props) {
           )}
           renderSectionHeader={({ section }) =>
             section.data.length ? (
-              <View
-                style={styles.sectionBlock}
-              >
-                <Text
-                  style={styles.sectionDay}
-                >
-                  {section.title}
-                </Text>
+              <View style={styles.sectionBlock}>
+                <Text style={styles.sectionDay}>{section.title}</Text>
                 <Text style={styles.sectionDate}>{section.data[0].date}</Text>
               </View>
             ) : (
@@ -250,12 +246,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   sectionDate: {
-    color: colors.gray,
+    color: colors.sectionDate,
     fontFamily: "Poppins-SemiBold",
     fontSize: 21,
   },
   sectionDay: {
-    color: colors.gray,
+    color: colors.sectionDay,
     fontFamily: "Poppins-Medium",
     fontSize: 25,
   },

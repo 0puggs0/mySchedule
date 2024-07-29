@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     height: 150,
   },
   title: {
-    color: colors.gray,
+    color: colors.white,
     marginTop: 75,
     fontFamily: "Poppins-Medium",
     fontSize: 36,

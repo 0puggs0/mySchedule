@@ -18,7 +18,7 @@ export const Schedule = ({ route, navigation }: Props) => {
   const [nowHour, setNowHour] = useState(dayjs().format('HH:mm'));
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    const timeout = setInterval(() => {
       setNowDate(dayjs().format('DD.MM.YYYY'))
       setNowHour(dayjs().format('HH:mm'))
     }, 60000)

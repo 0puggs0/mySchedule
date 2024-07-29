@@ -4,12 +4,6 @@ import { colors } from '../constants/colors';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import dayjs from 'dayjs';
 import vkPosts from '../data/vk_posts.json';
-interface Props {
-    image: string,
-    title: string,
-    date: string,
-    url: string
-}
 
 interface VkPost{
   text: string,
@@ -18,7 +12,7 @@ interface VkPost{
   url: string
 }
 
-export function News(props: Props){
+export function News(){
   const data1: VkPost[] = vkPosts
     data1.sort((a, b) => {
       if(a.date > b.date) {
@@ -103,7 +97,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         width: 356,
         fontFamily: 'Poppins-Medium',
-        color: colors.semiBlack,
+        color: colors.newsCardTitle,
         
       },
       cardDate: {

@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     width: 100,
     fontSize: 17,
     fontFamily: "Poppins-Regular",
-    color: colors.white,
+    color: colors.classNumTextColor,
     paddingBottom: 7,
     paddingTop: 7,
     
