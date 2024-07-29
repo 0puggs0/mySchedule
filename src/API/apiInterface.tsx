@@ -36,18 +36,11 @@ export interface ScheduleItem {
   timeEnd: string;
   timeStart: string;
   week: string | null;
+  id: string
 }
 
-export interface ProfessorScheduleItem {
-    date: string,
+export interface ProfessorScheduleItem extends Omit<ScheduleItem, "group">{
     group: Group,
-    pairNumber: string,
-    professor: Professor,
-    room: Room,
-    subject: Subject,
-    timeEnd: string,
-    timeStart: string,
-    week: string | null
 }
 
 export interface ScheduleArrayInterface {

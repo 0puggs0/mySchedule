@@ -21,7 +21,7 @@ export const Schedule = ({ route, navigation }: Props) => {
     const timeout = setTimeout(() => {
       setNowDate(dayjs().format('DD.MM.YYYY'))
       setNowHour(dayjs().format('HH:mm'))
-    }, 6000)
+    }, 60000)
     return () => clearInterval(timeout)
   }, [])
 
@@ -36,9 +36,11 @@ export const Schedule = ({ route, navigation }: Props) => {
   useEffect(() => {
     if (route.name === "Пн") {
       dispatch(getSchedule());
-      navigation.navigate(`${day}`);
     }
-  }, [week, day, group]);
+  }, [week,group]);
+  useEffect(() => {
+    navigation.navigate(`${day}`);
+  }, [day])
   if (scheduleLoading) {
     return (
       <View
@@ -67,7 +69,7 @@ export const Schedule = ({ route, navigation }: Props) => {
         )}
         data={schedule?.[days[route.name]]}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.timeStart}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => 
           item.date === nowDate && 
           nowHour >= item.timeStart && nowHour <= item.timeEnd ?

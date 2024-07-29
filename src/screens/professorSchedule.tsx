@@ -22,6 +22,7 @@ import BottomSheet, {
 import { Calendar, DateData } from "react-native-calendars";
 import { getWeeksSince } from "../utils/getWeekSince";
 import { colors } from "../constants/colors";
+import dayjs from "dayjs";
 type Props = StackScreenProps<RootStackParamList, "ProfessorSchedule">;
 export function ProfessorSchedule({ navigation, route }: Props) {
   function onDayPress(day: DateData) {
@@ -33,7 +34,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
     (state) => state.schedule,
   );
   const week = useAppSelector((state) => state.week.week);
-  const [localWeek, setLocalWeek] = useState(week);
+  const [localWeek, setLocalWeek] = useState(getWeeksSince(dayjs().toString()));
 
   const insets = useSafeAreaInsets();
 
@@ -141,7 +142,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
           style={styles.contentSectionList}
           contentContainerStyle={{ paddingBottom: 135 }}
           sections={professorSchedule}
-          keyExtractor={(item, index) => index + ""}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <ProfessorPair
               group={item.group.name}
