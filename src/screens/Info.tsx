@@ -21,9 +21,10 @@ import {
   TextInput,
   FlatList,
   Linking,
+  Switch,
 } from "react-native";
 
-import { useAppSelector } from "../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
 import {
   BottomSheetBackdrop,
@@ -32,7 +33,8 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors } from "../constants/colors";
+import { colors, ligthColors } from "../constants/colors";
+import { setTheme } from "../store/themeSlice";
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
@@ -42,8 +44,17 @@ interface ItemType {
 }
 
 export function Info({ navigation }: Props) {
+  const dispatch = useAppDispatch()
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme);
+  
 
-
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState)
+    theme == 'dark' ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
+  }
+  
   
   const insets = useSafeAreaInsets();
   const [groupAs, setGroupAs] = useState("");
@@ -111,7 +122,7 @@ export function Info({ navigation }: Props) {
   };
   return (
     <View
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: colors.black }}
+      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : ligthColors.black }}
     >
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Личный кабинет</Text>
@@ -150,43 +161,52 @@ export function Info({ navigation }: Props) {
           </TouchableOpacity>
         </View>
         
+        <View>
+          <Switch
+        trackColor={{false: '#767577', true: '#81b0ff'}}
+        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+        ios_backgroundColor="#3e3e3e"
+        onValueChange={toggleSwitch}
+        value={isEnabled}
+      />
+        </View>
         <View style={{ flexDirection: "row", gap: 23, marginTop: 30 }}>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
               padding: 13,
-              backgroundColor: colors.black,
+              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
               borderRadius: 8,
             }}
           >
             <FontAwesome5
               name="telegram-plane"
               size={28}
-              color={colors.semiWhite}
+              color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://vk.com/kspsuti.samara")}
             style={{
               padding: 13,
-              backgroundColor: colors.black,
+              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
               borderRadius: 8,
             }}
           >
-            <Entypo name="vk" size={28} color={colors.semiWhite} />
+            <Entypo name="vk" size={28} color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://ks.psuti.ru/")}
             style={{
               padding: 13,
-              backgroundColor: colors.black,
+              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
               borderRadius: 8,
             }}
           >
             <MaterialCommunityIcons
               name="web"
               size={28}
-              color={colors.semiWhite}
+              color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite}
             />
           </TouchableOpacity>
         </View>
@@ -197,7 +217,7 @@ export function Info({ navigation }: Props) {
         index={0}
         enablePanDownToClose={true}
         snapPoints={["85%"]}
-        backgroundStyle={{ backgroundColor: colors.semiBlack }}
+        backgroundStyle={{ backgroundColor: theme === 'dark' ? colors.semiBlack : ligthColors.semiBlack }}
       >
         <BottomSheetView style={styles.bottomSheetContainer}>
           <Text style={styles.bottomSheetHeading}>Выберите преподавателя:</Text>
@@ -237,13 +257,13 @@ export function Info({ navigation }: Props) {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  contentBlock: {
-    backgroundColor: colors.semiBlack,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 32,
+const createStyles = (theme) => StyleSheet.create({ 
+  contentBlock: { 
+    backgroundColor: theme === 'dark' ? colors.semiBlack : ligthColors.semiBlack, 
+    height: "100%", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    borderRadius: 32, 
     flex: 1,
   },
   topHeading: {
@@ -253,24 +273,24 @@ const styles = StyleSheet.create({
   },
   topHeadingText: {
     textAlign: "center",
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : ligthColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
   },
   heading: {
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : ligthColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 38,
   },
   groupText: {
-    color: colors.semiWhite,
+    color: theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
   },
   button: {
     width: 307,
     height: 47,
-    backgroundColor: colors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
@@ -278,7 +298,7 @@ const styles = StyleSheet.create({
   buttonBS: {
     width: 175,
     height: 78,
-    backgroundColor: colors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -286,12 +306,12 @@ const styles = StyleSheet.create({
   },
   buttonBSText: {
     textAlign: "center",
-    color: "white",
+    color: theme === 'dark' ? colors.white : ligthColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 16,
   },
   textButton: {
-    color: colors.textButtonColor,
+    color: theme === 'dark' ? colors.textButtonColor : colors.textButtonColor,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
   },
@@ -307,7 +327,7 @@ const styles = StyleSheet.create({
   bottomSheetHeading: {
     fontSize: 24,
     textAlign: "center",
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : ligthColors.white,
     maxWidth: 210,
     fontFamily: "Poppins-Bold",
   },
@@ -315,10 +335,10 @@ const styles = StyleSheet.create({
     width: 290,
     borderRadius: 8,
     height: 60,
-    backgroundColor: colors.bottomSheetInputColor,
+    backgroundColor: theme === 'dark' ? colors.bottomSheetInputColor : ligthColors.bottomSheetInputColor,
     textAlign: "center",
     fontSize: 20,
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : ligthColors.white,
     fontFamily: "Poppins-Medium",
     alignItems: "center",
     justifyContent: "center",
@@ -333,7 +353,7 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     alignSelf: "flex-end",
-    backgroundColor: colors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
     padding: 10,
     position: "absolute",
     right: 20,
