@@ -1,12 +1,17 @@
-import { View, Image, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../API/apiInterface";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { setTheme } from "../store/themeSlice";
 
 export type Props = StackScreenProps<RootStackParamList, "Splash">;
 const Splash = ({ navigation }: Props) => {
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+  const dispatch = useAppDispatch()
   const groupChecher = async () => {
     const group = await AsyncStorage.getItem("group");
     if (group) {
@@ -15,22 +20,31 @@ const Splash = ({ navigation }: Props) => {
       navigation.navigate("Login" as never);
     }
   };
+
+  const themeChecher = async () => {
+    const asyncStorageTheme = await AsyncStorage.getItem("theme");
+    if (asyncStorageTheme) {
+      dispatch(setTheme(asyncStorageTheme))
+    }
+  };
   useEffect(() => {
-    groupChecher();
+    themeChecher()
+    groupChecher()
   }, []);
   return (
     <View
       style={styles.container}
     >
+      
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) =>  StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: colors.semiBlack,
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     justifyContent: "center",
     alignItems: "center",
   },

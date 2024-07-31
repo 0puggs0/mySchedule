@@ -5,6 +5,7 @@ import {
   MaterialCommunityIcons,
   AntDesign,
 } from "@expo/vector-icons";
+import Feather from '@expo/vector-icons/Feather';
 import Svg, { Path } from "react-native-svg";
 import React, {
   useCallback,
@@ -21,7 +22,6 @@ import {
   TextInput,
   FlatList,
   Linking,
-  Switch,
 } from "react-native";
 
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
@@ -35,6 +35,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors, lightColors} from "../constants/colors";
 import { setTheme } from "../store/themeSlice";
+import { InsetsInterface } from "../API/apiInterface";
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
@@ -44,19 +45,31 @@ interface ItemType {
 }
 
 export function Info({ navigation }: Props) {
-  const dispatch = useAppDispatch()
-  const theme = useAppSelector(state => state.theme.theme)
-  const styles = useMemo(() => createStyles(theme), [theme]);
-  
-  console.log('123')
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => {
-    setIsEnabled(previousState => !previousState)
-    theme == 'dark' ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
+
+  function ChangeThemeIcon() {
+    return (
+    theme === 'dark' ? (
+      <Feather name="sun" size={34} color="white" />
+    ) : (
+      <Feather name="moon" size={34} color="black" />
+    ))
   }
-  
-  
+
+  const dispatch = useAppDispatch()
   const insets = useSafeAreaInsets();
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = useMemo(() => createStyles(theme, insets), [theme]);
+  
+  const toggleSwitch = () => {
+    theme == 'dark' ? dispatch(setTheme('light')) : dispatch(setTheme('dark'))
+    
+  }
+
+  useEffect(() => {
+    AsyncStorage.setItem('theme', theme)
+  }, [theme])
+  
+  
   const [groupAs, setGroupAs] = useState("");
   const group = useAppSelector((state) => state.group.value);
 
@@ -122,12 +135,16 @@ export function Info({ navigation }: Props) {
   };
   return (
     <View
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
+      style={{ flex: 1, backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
     >
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Личный кабинет</Text>
       </View>
+      
       <View style={styles.contentBlock}>
+      <TouchableOpacity style = {{ position: 'absolute', left: 360, bottom: 610}} onPress={toggleSwitch}>
+        <ChangeThemeIcon></ChangeThemeIcon>
+      </TouchableOpacity>
         <Svg width={247} height={223} fill="none">
           <Path
             fill="#5465FF"
@@ -161,16 +178,9 @@ export function Info({ navigation }: Props) {
           </TouchableOpacity>
         </View>
         
-        <View>
-          <Switch
-        trackColor={{false: '#767577', true: '#81b0ff'}}
-        thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={isEnabled}
-      />
+        <View style = {{  padding: 10, marginTop: 20,}}>
         </View>
-        <View style={{ flexDirection: "row", gap: 23, marginTop: 30 }}>
+        <View style={{ flexDirection: "row", gap: 23, marginTop: 20 }}>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
@@ -257,7 +267,7 @@ export function Info({ navigation }: Props) {
     </View>
   );
 }
-const createStyles = (theme: string) => StyleSheet.create({ 
+const createStyles = (theme: string, insets: InsetsInterface) => StyleSheet.create({ 
   contentBlock: { 
     backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack, 
     height: "100%", 
@@ -267,7 +277,7 @@ const createStyles = (theme: string) => StyleSheet.create({
     flex: 1,
   },
   topHeading: {
-    height: 115,
+    height: 150,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -276,6 +286,7 @@ const createStyles = (theme: string) => StyleSheet.create({
     color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
+    paddingTop: insets.top
   },
   heading: {
     color: theme === 'dark' ? colors.white : lightColors.white,

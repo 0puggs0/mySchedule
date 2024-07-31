@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import dayjs from 'dayjs';
 import vkPosts from '../data/vk_posts.json';
 import { useAppSelector } from '../hooks/redux';
+import { InsetsInterface } from '../API/apiInterface';
 
 interface VkPost{
   text: string,
@@ -14,9 +15,9 @@ interface VkPost{
 }
 
 export function News(){
-
+  const insets = useSafeAreaInsets();
   const theme = useAppSelector(state => state.theme.theme)
-  const styles = createStyles(theme)
+  const styles = createStyles(theme, insets)
 
   const data1: VkPost[] = vkPosts
     data1.sort((a, b) => {
@@ -28,11 +29,10 @@ export function News(){
       }
       return 0
     })
-    const insets = useSafeAreaInsets();
     return (
         
         <View
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
+      style={{ flex: 1,  backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
     >
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Новости</Text>
@@ -57,7 +57,7 @@ export function News(){
     )
 }
 
-const createStyles = (theme: string) => StyleSheet.create({
+const createStyles = (theme: string, insets: InsetsInterface) => StyleSheet.create({
     container: {
         flex: 1,
         
@@ -72,7 +72,7 @@ const createStyles = (theme: string) => StyleSheet.create({
         
       },
       topHeading: {
-        height: 115,
+        height: 150,
         alignItems: "center",
         justifyContent: "center",
       },
@@ -81,6 +81,7 @@ const createStyles = (theme: string) => StyleSheet.create({
         color: theme === 'dark' ? colors.white : lightColors.white,
         fontFamily: "Poppins-Medium",
         fontSize: 30,
+        paddingTop: insets.top
       },
       card: {
         backgroundColor: theme === 'dark' ? colors.gray : lightColors.gray,

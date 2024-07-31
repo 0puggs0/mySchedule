@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Image} from "react-native";
 import "react-native-gesture-handler";
 import { MyStack } from "./src/navigation/mainStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -12,6 +12,7 @@ import {useFonts} from 'expo-font'
 const store = setupStore();
 
 export default function App() {
+
 
 
   const [fontsLoaded] = useFonts({

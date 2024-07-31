@@ -36,6 +36,7 @@
     "react-native-shimmer-placeholder": "^2.0.9",
     "react-native-skeleton-content": "^1.0.28",
     "react-native-skeleton-placeholder": "^5.2.4",
+    "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "15.2.0",
     "react-native-switch": "^1.5.1",
     "react-native-tab-view": "^3.5.2",
