@@ -22,7 +22,7 @@ export const colors = {
     sectionDate: '#BCC1CD'
 
 }
-export const ligthColors = {
+export const lightColors = {
     purple: '#5465FF',
     semiPurple: 'rgba(84, 101, 255, 0.9)',
     minPurple: 'rgba(84, 101, 255, 0.1)',

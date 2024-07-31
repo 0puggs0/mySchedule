@@ -3,7 +3,7 @@ import { MyTabs } from "./topTabs";
 import React from "react";
 import { Info } from "../screens/Info";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, ligthColors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
 import { News } from "../screens/news";
 import {  useAppSelector } from "../hooks/redux";
 
@@ -17,7 +17,7 @@ export function BottomTabs() {
       screenOptions={{ headerShown: false, 
         tabBarLabel: () => null,
         tabBarInactiveTintColor : '#1c3352',
-        tabBarStyle: { backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
+        tabBarStyle: { backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
           borderTopWidth: 0},
         
       }}

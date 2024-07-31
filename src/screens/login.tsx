@@ -14,11 +14,14 @@ import { setGroup } from "../store/groupSlice";
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getSchedule } from "../store/scheduleSlice";
-import { useAppDispatch } from "../hooks/redux";
-import { colors } from "../constants/colors";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { colors, lightColors } from "../constants/colors";
 
 export function Login() {
   
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   const insets = useSafeAreaInsets()
 
   const navigation = useNavigation();
@@ -63,7 +66,7 @@ export function Login() {
       height: "100%",
       flexDirection: 'column',
     justifyContent: 'space-between',
-      backgroundColor: colors.black, paddingTop: insets.top, paddingBottom: insets.bottom}}>
+      backgroundColor: theme === 'dark' ? colors.black : lightColors.black, paddingTop: insets.top, paddingBottom: insets.bottom}}>
       <View><Text style={styles.heading}>Расписание КС ПГУТИ</Text></View>
       <View style={styles.main}>
         <Text style={styles.h1}>Привет!</Text>
@@ -78,7 +81,7 @@ export function Login() {
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={() => submitGroup()}>
-          <Ionicons name="checkmark-sharp" size={36} color={colors.submitInputColor}/>
+          <Ionicons name="checkmark-sharp" size={36} color={theme === 'dark' ? colors.submitInputColor : lightColors.submitInputColor}/>
         </TouchableOpacity>
         </View>
         <View>
@@ -91,77 +94,53 @@ export function Login() {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
   main: {
     alignItems: "center",
   },
   heading: {
     fontSize: 16,
-    color: colors.gray,
+    color: theme === 'dark' ? colors.gray : lightColors.gray,
     fontFamily: "Poppins-Medium",
   },
   input: {
     width: 300,
     height: 70,
     borderRadius: 8,
-    backgroundColor: colors.inputBlack,
+    backgroundColor: theme === 'dark' ? colors.inputBlack : lightColors.inputBlack,
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 17,
-    shadowColor: "#000",
-        shadowOffset: {
-        width: 0,
-        height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-        elevation: 8,
   },
 
   text: {
-    color: colors.gray,
+    color: theme === 'dark' ? colors.gray : lightColors.gray,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
     
   },
   h1: {
-    color: colors.semiWhite,
+    color: theme === 'dark' ? colors.semiWhite : lightColors.semiWhite,
     fontFamily: "Poppins-Medium",
     fontSize: 52,
     marginBottom: 20,
-    shadowColor: "#000",
-        shadowOffset: {
-        width: 0,
-        height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 4.65,
-        elevation: 8,
   },
   textInput: {
     fontSize: 25,
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: 'Poppins-SemiBold',
   },
   button: {
     width: 120,
     height: 50,
-    backgroundColor: colors.inputBlack,
+    backgroundColor: theme === 'dark' ? colors.inputBlack : lightColors.inputBlack,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-        shadowOffset: {
-        width: 0,
-        height: 4,
-        },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
   },
   title: {
-    color: colors.gray,
+    color: theme === 'dark' ? colors.gray : lightColors.gray,
     fontFamily: "Poppins-Medium",
     fontSize: 20,
     marginBottom: 6,

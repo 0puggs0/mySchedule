@@ -1,9 +1,10 @@
 import React from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, FlatList, Image, Linking } from 'react-native'
-import { colors } from '../constants/colors';
+import { colors, lightColors } from '../constants/colors';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import dayjs from 'dayjs';
 import vkPosts from '../data/vk_posts.json';
+import { useAppSelector } from '../hooks/redux';
 
 interface VkPost{
   text: string,
@@ -13,6 +14,10 @@ interface VkPost{
 }
 
 export function News(){
+
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   const data1: VkPost[] = vkPosts
     data1.sort((a, b) => {
       if(a.date > b.date) {
@@ -27,7 +32,7 @@ export function News(){
     return (
         
         <View
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: colors.black }}
+      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
     >
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Новости</Text>
@@ -52,13 +57,13 @@ export function News(){
     )
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
     container: {
         flex: 1,
         
     },
     contentBlock: {
-        backgroundColor: colors.semiBlack,
+        backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
         height: "100%",
         alignItems: "center",
         justifyContent: "center",
@@ -73,12 +78,12 @@ const styles = StyleSheet.create({
       },
       topHeadingText: {
         textAlign: "center",
-        color: colors.white,
+        color: theme === 'dark' ? colors.white : lightColors.white,
         fontFamily: "Poppins-Medium",
         fontSize: 30,
       },
       card: {
-        backgroundColor: colors.gray,
+        backgroundColor: theme === 'dark' ? colors.gray : lightColors.gray,
         borderRadius: 16,
         paddingVertical: 15,
         paddingHorizontal: 10,
@@ -110,7 +115,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: 110,
         padding: 10,
-        color: colors.gray,  
+        color: theme === 'dark' ? colors.gray : lightColors.gray,  
         backgroundColor: colors.purple,
         borderRadius: 8
       }

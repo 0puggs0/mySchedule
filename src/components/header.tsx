@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useAppSelector } from "../hooks/redux";
 import dayjs from "dayjs";
 import { days } from "../constants/days";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
 interface Props {
   title: string;
   days: string[];
@@ -12,6 +12,9 @@ interface Props {
 
 export function Header(props: Props) {
   
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   function OpenBottomSheet() {
     props.handleOpenPress();
 
@@ -45,14 +48,14 @@ export function Header(props: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
   header: {
-    backgroundColor: colors.black,
+    backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
     width: "100%",
     height: 150,
   },
   title: {
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     marginTop: 75,
     fontFamily: "Poppins-Medium",
     fontSize: 36,
@@ -65,12 +68,12 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   week: {
-    color: colors.semiPurple,
+    color: theme === 'dark' ? colors.semiPurple : lightColors.semiPurple,
     overflow: "hidden",
     marginTop: 80,
     fontSize: 18,
     padding: 12,
-    backgroundColor: colors.minPurple,
+    backgroundColor: theme === 'dark' ? colors.minPurple : lightColors.minPurple,
     borderRadius: 15,
     fontFamily: "Poppins-SemiBold",
   },

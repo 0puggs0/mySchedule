@@ -25,7 +25,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { getDayFromData } from "../utils/getDayFromData";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
 import { Day } from "../types/schedule";
 import { RootStackParamList } from "../API/apiInterface";
 
@@ -74,6 +74,23 @@ XDate.defaultLocale = "ru";
 const Tab = createMaterialTopTabNavigator<RootStackParamList>();
 
 export const MyTabs = () => {
+
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyle(theme)
+
+  const calendarTheme = {
+    calendarBackground: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
+    textDayFontFamily: "Poppins-Regular",
+    textDayHeaderFontFamily: "Poppins-Medium",
+    textMonthFontFamily: "Poppins-SemiBold",
+    arrowColor: colors.purple,
+    todayTextColor: colors.purple,
+    dayTextColor: theme === 'dark' ? colors.white : lightColors.white,
+    monthTextColor: theme === 'dark' ? colors.white : lightColors.white,
+    textSectionTitleColor: theme === 'dark' ? colors.gray : lightColors.gray,
+  };
+  
+
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const renderBackdrop = useCallback(
@@ -99,6 +116,7 @@ export const MyTabs = () => {
       dispatch(setWeek(getWeeksSince(day.dateString)));
       dispatch(setDate(dayjs(day.dateString).toString()));
     }
+    bottomSheetRef.current?.close()
   };
   const dispatch = useAppDispatch();
   function MyTabBar({
@@ -152,7 +170,7 @@ export const MyTabs = () => {
             ],
             backgroundColor: animationValue.interpolate({
               inputRange: [0, 1],
-              outputRange: [colors.semiBlack, colors.purple], // Измените цвета для настройки градиента
+              outputRange: [(theme === 'dark' ? colors.semiBlack : lightColors.semiBlack), colors.purple], // Измените цвета для настройки градиента
             }),
           };
           return (
@@ -171,7 +189,7 @@ export const MyTabs = () => {
               >
                 <Text
                   style={{
-                    color: isFocused ? colors.topTabsWhite : colors.topTabsTabBarGray,
+                    color: isFocused ? (theme === 'dark' ? colors.topTabsWhite : lightColors.topTabsWhite) : (theme === 'dark' ? colors.topTabsTabBarGray : lightColors.topTabsTabBarGray),
                     fontFamily: "Poppins-Medium",
                     fontSize: 15,
                   }}
@@ -180,7 +198,7 @@ export const MyTabs = () => {
                 </Text>
                 <Text
                   style={{
-                    color: isFocused ? colors.topTabsWhite : colors.topTabsTabBarGray,
+                    color: isFocused ? (theme === 'dark' ? colors.topTabsWhite : lightColors.topTabsWhite) : (theme === 'dark' ? colors.topTabsTabBarGray : lightColors.topTabsTabBarGray),
                     fontFamily: "Poppins-SemiBold",
                     fontSize: 19,
                   }}
@@ -204,7 +222,7 @@ export const MyTabs = () => {
       <Header title={"Четверг"} days={[]} handleOpenPress={handleOpenPress} />
 
       <Tab.Navigator
-        style={{ backgroundColor: colors.black }}
+        style={{ backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
         tabBar={(props) => {
           return <MyTabBar {...props} />;
         }}
@@ -238,29 +256,21 @@ export const MyTabs = () => {
         ref={bottomSheetRef}
         enablePanDownToClose={true}
         snapPoints={["25%", "50%"]}
-        backgroundStyle={{ backgroundColor: colors.semiBlack }}
+        backgroundStyle={{ backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack }}
       >
         <BottomSheetView>
           <Calendar
-            theme={{
-              calendarBackground: 'colors.semiBlack',
-              textDayFontFamily: "Poppins-Regular",
-              textDayHeaderFontFamily: "Poppins-Medium",
-              textMonthFontFamily: "Poppins-SemiBold",
-              arrowColor: colors.purple,
-              todayTextColor: colors.purple,
-              dayTextColor: colors.white,
-              monthTextColor: colors.white,
-              textSectionTitleColor: colors.gray,
-            }}
+            theme={calendarTheme}
+            initialDate={selectedDate}
             onDayPress={onDayPress}
+            
             hideExtraDays={true}
             markedDates={{
               [selectedDate]: {
                 selected: true,
                 disableTouchEvent: true,
                 selectedColor: colors.purple,
-                selectedTextColor: colors.white,
+                selectedTextColor: theme === 'dark' ? colors.white : lightColors.white,
               },
             }}
           />
@@ -270,17 +280,17 @@ export const MyTabs = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyle = (theme: string) => StyleSheet.create({
   customTabBar: {
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 10,
     paddingHorizontal: 20,
-    backgroundColor: colors.semiBlack,
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
     borderBottomWidth: 1,
-    borderBottomColor: colors.white,
+    borderBottomColor: theme === 'dark' ? colors.white : lightColors.white,
   },
   customTabBarAnimatedItem: {
     flex: 1,

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import "react-native-gesture-handler";
 import { MyStack } from "./src/navigation/mainStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -7,11 +7,13 @@ import { Provider } from "react-redux";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { setupStore } from "./src/store/store";
 import {useFonts} from 'expo-font'
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+
 
 const store = setupStore();
 
 export default function App() {
+
+
   const [fontsLoaded] = useFonts({
     'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
     'Poppins-SemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
@@ -43,6 +45,5 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#131418",
   },
 });

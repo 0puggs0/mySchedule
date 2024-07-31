@@ -33,7 +33,7 @@ import {
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors, ligthColors } from "../constants/colors";
+import { colors, lightColors} from "../constants/colors";
 import { setTheme } from "../store/themeSlice";
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -46,9 +46,9 @@ interface ItemType {
 export function Info({ navigation }: Props) {
   const dispatch = useAppDispatch()
   const theme = useAppSelector(state => state.theme.theme)
-  const styles = createStyles(theme);
+  const styles = useMemo(() => createStyles(theme), [theme]);
   
-
+  console.log('123')
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
     setIsEnabled(previousState => !previousState)
@@ -122,7 +122,7 @@ export function Info({ navigation }: Props) {
   };
   return (
     <View
-      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : ligthColors.black }}
+      style={{ flex: 1, paddingTop: insets.top, backgroundColor: theme === 'dark' ? colors.black : lightColors.black }}
     >
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Личный кабинет</Text>
@@ -175,38 +175,38 @@ export function Info({ navigation }: Props) {
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
               padding: 13,
-              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
+              backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
               borderRadius: 8,
             }}
           >
             <FontAwesome5
               name="telegram-plane"
               size={28}
-              color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite}
+              color={theme === 'dark' ? colors.semiWhite : lightColors.semiWhite}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://vk.com/kspsuti.samara")}
             style={{
               padding: 13,
-              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
+              backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
               borderRadius: 8,
             }}
           >
-            <Entypo name="vk" size={28} color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite} />
+            <Entypo name="vk" size={28} color={theme === 'dark' ? colors.semiWhite : lightColors.semiWhite} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://ks.psuti.ru/")}
             style={{
               padding: 13,
-              backgroundColor: theme === 'dark' ? colors.black : ligthColors.black,
+              backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
               borderRadius: 8,
             }}
           >
             <MaterialCommunityIcons
               name="web"
               size={28}
-              color={theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite}
+              color={theme === 'dark' ? colors.semiWhite : lightColors.semiWhite}
             />
           </TouchableOpacity>
         </View>
@@ -217,7 +217,7 @@ export function Info({ navigation }: Props) {
         index={0}
         enablePanDownToClose={true}
         snapPoints={["85%"]}
-        backgroundStyle={{ backgroundColor: theme === 'dark' ? colors.semiBlack : ligthColors.semiBlack }}
+        backgroundStyle={{ backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack }}
       >
         <BottomSheetView style={styles.bottomSheetContainer}>
           <Text style={styles.bottomSheetHeading}>Выберите преподавателя:</Text>
@@ -257,9 +257,9 @@ export function Info({ navigation }: Props) {
     </View>
   );
 }
-const createStyles = (theme) => StyleSheet.create({ 
+const createStyles = (theme: string) => StyleSheet.create({ 
   contentBlock: { 
-    backgroundColor: theme === 'dark' ? colors.semiBlack : ligthColors.semiBlack, 
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack, 
     height: "100%", 
     alignItems: "center", 
     justifyContent: "center", 
@@ -273,24 +273,24 @@ const createStyles = (theme) => StyleSheet.create({
   },
   topHeadingText: {
     textAlign: "center",
-    color: theme === 'dark' ? colors.white : ligthColors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
   },
   heading: {
-    color: theme === 'dark' ? colors.white : ligthColors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 38,
   },
   groupText: {
-    color: theme === 'dark' ? colors.semiWhite : ligthColors.semiWhite,
+    color: theme === 'dark' ? colors.semiWhite : lightColors.semiWhite,
     fontFamily: "Poppins-Medium",
     fontSize: 30,
   },
   button: {
     width: 307,
     height: 47,
-    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : lightColors.purple,
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
@@ -298,7 +298,7 @@ const createStyles = (theme) => StyleSheet.create({
   buttonBS: {
     width: 175,
     height: 78,
-    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : lightColors.purple,
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
@@ -306,7 +306,7 @@ const createStyles = (theme) => StyleSheet.create({
   },
   buttonBSText: {
     textAlign: "center",
-    color: theme === 'dark' ? colors.white : ligthColors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
     fontSize: 16,
   },
@@ -327,7 +327,7 @@ const createStyles = (theme) => StyleSheet.create({
   bottomSheetHeading: {
     fontSize: 24,
     textAlign: "center",
-    color: theme === 'dark' ? colors.white : ligthColors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     maxWidth: 210,
     fontFamily: "Poppins-Bold",
   },
@@ -335,25 +335,17 @@ const createStyles = (theme) => StyleSheet.create({
     width: 290,
     borderRadius: 8,
     height: 60,
-    backgroundColor: theme === 'dark' ? colors.bottomSheetInputColor : ligthColors.bottomSheetInputColor,
+    backgroundColor: theme === 'dark' ? colors.bottomSheetInputColor : lightColors.bottomSheetInputColor,
     textAlign: "center",
     fontSize: 20,
-    color: theme === 'dark' ? colors.white : ligthColors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
     alignItems: "center",
     justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
   },
   closeButton: {
     alignSelf: "flex-end",
-    backgroundColor: theme === 'dark' ? colors.purple : ligthColors.purple,
+    backgroundColor: theme === 'dark' ? colors.purple : lightColors.purple,
     padding: 10,
     position: "absolute",
     right: 20,

@@ -21,10 +21,14 @@ import BottomSheet, {
 } from "@gorhom/bottom-sheet";
 import { Calendar, DateData } from "react-native-calendars";
 import { getWeeksSince } from "../utils/getWeekSince";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
 import dayjs from "dayjs";
 type Props = StackScreenProps<RootStackParamList, "ProfessorSchedule">;
 export function ProfessorSchedule({ navigation, route }: Props) {
+
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   function onDayPress(day: DateData) {
     const dayOfWeek = dayjs(day.dateString).day();
     if (dayOfWeek !== 0) {
@@ -72,23 +76,23 @@ export function ProfessorSchedule({ navigation, route }: Props) {
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleOpenPress = () => bottomSheetRef.current?.expand();
 
-  const theme = {
-    calendarBackground: colors.semiBlack,
+  const calendarTheme = {
+    calendarBackground: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     textDayFontFamily: "Poppins-Regular",
     textDayHeaderFontFamily: "Poppins-Medium",
     textMonthFontFamily: "Poppins-SemiBold",
     arrowColor: colors.purple,
     todayTextColor: colors.purple,
-    dayTextColor: colors.white,
-    monthTextColor: colors.white,
-    textSectionTitleColor: colors.gray,
+    dayTextColor: theme === 'dark' ? colors.white : lightColors.white,
+    monthTextColor: theme === 'dark' ? colors.white : lightColors.white,
+    textSectionTitleColor: theme === 'dark' ? colors.gray : lightColors.gray,
   };
 
   if (professorScheduleLoading) {
     return (
       <View
         style={{
-          backgroundColor: colors.black,
+          backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
           flex: 1,
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
@@ -101,7 +105,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
             }}
             style={styles.backButton}
           >
-            <Entypo name="chevron-left" size={24} color={colors.gray} />
+            <Entypo name="chevron-left" size={24} color={theme === 'dark' ? colors.gray : lightColors.gray} />
           </TouchableOpacity>
           <Text style={styles.headerText}>{formatName(route.params.name)}</Text>
           <TouchableOpacity onPress={() => handleOpenPress()}>
@@ -119,7 +123,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
   return (
     <View
       style={{
-        backgroundColor: colors.black,
+        backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
         flex: 1,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
@@ -132,7 +136,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
           }}
           style={styles.backButton}
         >
-          <Entypo name="chevron-left" size={24} color={colors.gray} />
+          <Entypo name="chevron-left" size={24} color={theme === 'dark' ? colors.gray : lightColors.gray} />
         </TouchableOpacity>
         <Text style={styles.headerText}>{formatName(route.params.name)}</Text>
         <TouchableOpacity onPress={() => handleOpenPress()}>
@@ -174,12 +178,12 @@ export function ProfessorSchedule({ navigation, route }: Props) {
         ref={bottomSheetRef}
         enablePanDownToClose={true}
         snapPoints={["25%", "50%"]}
-        backgroundStyle={{ backgroundColor: colors.semiBlack }}
+        backgroundStyle={{ backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack }}
       >
         <BottomSheetView>
           <Calendar
             initialDate={selectedDate}
-            theme={theme}
+            theme={calendarTheme}
             onDayPress={onDayPress}
             hideExtraDays={true}
             markedDates={{
@@ -187,7 +191,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
                 selected: true,
                 disableTouchEvent: true,
                 selectedColor: colors.purple,
-                selectedTextColor: colors.white,
+                selectedTextColor: theme === 'dark' ? colors.white : lightColors.white,
               },
             }}
           />
@@ -197,7 +201,7 @@ export function ProfessorSchedule({ navigation, route }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const createStyles = (theme:string) => StyleSheet.create({
   header: {
     height: "15%",
     alignItems: "center",
@@ -208,28 +212,28 @@ const styles = StyleSheet.create({
   backButton: {
     overflow: "hidden",
     padding: 15,
-    backgroundColor: colors.semiBlack,
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     borderRadius: 8,
   },
   headerText: {
     textAlign: "center",
     fontSize: 25,
     width: 200,
-    color: colors.white,
+    color: theme === 'dark' ? colors.white : lightColors.white,
     fontFamily: "Poppins-Medium",
   },
   weekButton: {
-    color: colors.semiPurple,
+    color: theme === 'dark' ? colors.semiPurple : lightColors.semiPurple,
     overflow: "hidden",
     fontSize: 18,
     padding: 12,
-    backgroundColor: colors.minPurple,
+    backgroundColor: theme === 'dark' ? colors.minPurple : lightColors.minPurple,
     borderRadius: 15,
     fontFamily: "Poppins-SemiBold",
   },
   contentBlock: {
     height: "100%",
-    backgroundColor: colors.semiBlack,
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     borderTopRightRadius: 32,
     borderTopLeftRadius: 32,
   },
@@ -246,12 +250,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   sectionDate: {
-    color: colors.sectionDate,
+    color: theme === 'dark' ? colors.sectionDate : lightColors.sectionDate,
     fontFamily: "Poppins-SemiBold",
     fontSize: 21,
   },
   sectionDay: {
-    color: colors.sectionDay,
+    color: theme === 'dark' ? colors.sectionDay : lightColors.sectionDay,
     fontFamily: "Poppins-Medium",
     fontSize: 25,
   },

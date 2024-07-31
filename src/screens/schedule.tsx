@@ -7,13 +7,17 @@ import { FlatList } from "react-native-gesture-handler";
 import { days } from "../constants/days";
 import { getSchedule } from "../store/scheduleSlice";
 import type { StackScreenProps } from "@react-navigation/stack";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
 import { Day } from "../types/schedule";
 import dayjs from "dayjs";
 import { ActivePair } from "../components/activePair";
 
 export type Props = StackScreenProps<RootStackParamList, Day>;
 export const Schedule = ({ route, navigation }: Props) => {
+
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   const [nowDate, setNowDate] = useState(dayjs().format('DD.MM.YYYY'));
   const [nowHour, setNowHour] = useState(dayjs().format('HH:mm'));
 
@@ -39,7 +43,9 @@ export const Schedule = ({ route, navigation }: Props) => {
     }
   }, [week,group]);
   useEffect(() => {
+    if (route.name === "Пн") {
     navigation.navigate(`${day}`);
+    }
   }, [day])
   if (scheduleLoading) {
     return (
@@ -60,7 +66,7 @@ export const Schedule = ({ route, navigation }: Props) => {
             style={{
               textAlign: "center",
               fontFamily: "Poppins-Medium",
-              color: "white",
+              color: theme === 'dark' ? colors.white : lightColors.white,
               fontSize: 30,
             }}
           >
@@ -96,9 +102,9 @@ export const Schedule = ({ route, navigation }: Props) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (theme: string) => StyleSheet.create({
   container: {
-    backgroundColor: colors.semiBlack,
+    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     flex: 1,
     paddingHorizontal: 8,
   },
