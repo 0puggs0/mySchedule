@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
@@ -78,7 +78,7 @@ export const MyTabs = () => {
   const theme = useAppSelector(state => state.theme.theme)
   const styles = createStyle(theme)
 
-  const calendarTheme = {
+  const calendarTheme = useMemo(() => ({
     calendarBackground: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
     textDayFontFamily: "Poppins-Regular",
     textDayHeaderFontFamily: "Poppins-Medium",
@@ -88,7 +88,7 @@ export const MyTabs = () => {
     dayTextColor: theme === 'dark' ? colors.white : lightColors.white,
     monthTextColor: theme === 'dark' ? colors.white : lightColors.white,
     textSectionTitleColor: theme === 'dark' ? colors.gray : lightColors.gray,
-  };
+  }), [theme]);
   
 
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -260,6 +260,7 @@ export const MyTabs = () => {
       >
         <BottomSheetView>
           <Calendar
+            key={theme}
             theme={calendarTheme}
             initialDate={selectedDate}
             onDayPress={onDayPress}
@@ -270,7 +271,7 @@ export const MyTabs = () => {
                 selected: true,
                 disableTouchEvent: true,
                 selectedColor: colors.purple,
-                selectedTextColor: theme === 'dark' ? colors.white : lightColors.white,
+                selectedTextColor: colors.white,
               },
             }}
           />
