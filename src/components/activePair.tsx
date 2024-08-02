@@ -6,7 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { colors } from "../constants/colors";
+import { colors, lightColors } from "../constants/colors";
+import { useAppSelector } from "../hooks/redux";
 
 
 interface Props {
@@ -19,6 +20,9 @@ interface Props {
 }
 export function ActivePair(props: Props) {
   
+  const theme = useAppSelector(state => state.theme.theme)
+  const styles = createStyles(theme)
+
   const [isPressed, setIsPressed] = useState(2);
   return (
     <View style={styles.container}>
@@ -70,8 +74,8 @@ export function ActivePair(props: Props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: { backgroundColor: "#1B1D24" },
+const createStyles = (theme: string) => StyleSheet.create({
+  container: { backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack},
   pair: {
     columnGap: 16,
     flexDirection: "row",

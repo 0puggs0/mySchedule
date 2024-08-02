@@ -17,7 +17,7 @@ export function MyStack() {
         <Stack.Screen name="Splash" component={Splash}/>
         <Stack.Screen name="Login" component={Login}/>
         <Stack.Screen options={{gestureEnabled: false}} name="Schedule" component={BottomTabs}/>
-        <Stack.Screen key = '123' name="ProfessorSchedule" component={ProfessorSchedule}/>
+        <Stack.Screen name="ProfessorSchedule" component={ProfessorSchedule}/>
       </Stack.Navigator>
     </NavigationContainer>
     </BottomSheetModalProvider>

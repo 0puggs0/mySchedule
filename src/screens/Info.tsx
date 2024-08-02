@@ -339,7 +339,7 @@ export function Info({ navigation }: Props) {
               style={{
                 width: "100%",
                 height: "100%",
-                backgroundColor: "rgba(0,0,0,0.4)",
+                backgroundColor: "rgba(0,0,0,0.7)",
                 justifyContent: "center",
                 alignItems: "center",
               }}
@@ -466,7 +466,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       borderRadius: 10,
     },
     modalView: {
-      backgroundColor: "white",
+      backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
       padding: 20,
       borderRadius: 15,
       alignItems: "center",
@@ -486,6 +486,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       fontSize: 20,
       marginBottom: 10,
       fontFamily: "Poppins-Medium",
+      color: theme === 'dark' ? colors.white : lightColors.white
     },
     buttonsContainer: {
       flexDirection: "row",

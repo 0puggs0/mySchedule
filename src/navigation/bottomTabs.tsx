@@ -16,7 +16,6 @@ export function BottomTabs() {
        
       screenOptions={{ headerShown: false, 
         tabBarLabel: () => null,
-        tabBarInactiveTintColor : '#1c3352',
         tabBarStyle: { backgroundColor: theme === 'dark' ? colors.black : lightColors.black,
           borderTopWidth: 0},
         
