@@ -23,6 +23,7 @@ import {
   TouchableOpacity,
   View,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { getDayFromData } from "../utils/getDayFromData";
 import { colors, lightColors } from "../constants/colors";
@@ -115,6 +116,8 @@ export const MyTabs = () => {
       dispatch(setDay(getDayFromData(day.dateString)));
       dispatch(setWeek(getWeeksSince(day.dateString)));
       dispatch(setDate(dayjs(day.dateString).toString()));
+    } else {
+      Alert.alert('Ошибка', 'По воскресеньям не учимся))')
     }
     bottomSheetRef.current?.close()
   };
