@@ -25,6 +25,7 @@ import {
   Linking,
   Modal,
   TouchableWithoutFeedback,
+  StatusBar,
 } from "react-native";
 
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
@@ -155,73 +156,66 @@ export function Info({ navigation }: Props) {
         backgroundColor: theme === "dark" ? colors.black : lightColors.black,
       }}
     >
+      <StatusBar
+        barStyle={theme === "dark" ? "light-content" : "dark-content"}
+      />
       <View style={styles.topHeading}>
         <Text style={styles.topHeadingText}>Личный кабинет</Text>
       </View>
 
       <View style={styles.contentBlock}>
-        <TouchableOpacity
-          style={{
-            position: "absolute",
-            left: 360,
-            bottom: 610,
-            padding: 5,
-            backgroundColor: colors.purple,
-            borderRadius: 10,
-          }}
-          onPress={toggleSwitch}
-        >
-          <ChangeThemeIcon></ChangeThemeIcon>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={handleExit}
-          style={{
-            position: "absolute",
-            left: 313,
-            bottom: 610,
-            padding: 5,
-            backgroundColor: colors.purple,
-            borderRadius: 10,
-          }}
-        >
-          <MaterialIcons
-            name="exit-to-app"
-            size={30}
-            color={theme === "dark" ? colors.white : lightColors.white}
-          />
-        </TouchableOpacity>
-        <Svg width={170} height={153} viewBox="0 0 170 153" fill="none">
-          <Path
-            d="M84.854 0L.563 43.707v10.436l84.29 46.827 72.251-40.137v33.25h12.041V43.708L84.854 0zm60.208 53.747l-12.042 6.69-48.166 26.76-48.167-26.76-12.041-6.69-8.346-4.636 68.554-35.547 68.554 35.547-8.346 4.636z"
-            fill="#5465FF"
-          />
-          <Path
-            d="M127 114.646l-42.146 23.707-42.146-23.707V89.599l-12.041-6.69v38.779l54.187 30.481 54.187-30.481v-38.78L127 89.599v25.048z"
-            fill="#5465FF"
-          />
-        </Svg>
-        <View style={styles.block}>
-          <Text style={styles.heading}>Ваша группа:</Text>
+        <View style={styles.topButtonsContainer}>
+          <View style={styles.topButtons}>
+            <TouchableOpacity
+              style={{
+                padding: 5,
+                backgroundColor: colors.purple,
+                borderRadius: 10,
+              }}
+              onPress={toggleSwitch}
+            >
+              <ChangeThemeIcon></ChangeThemeIcon>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleExit}
+              style={{
+                padding: 5,
+                backgroundColor: colors.purple,
+                borderRadius: 10,
+              }}
+            >
+              <MaterialIcons
+                name="exit-to-app"
+                size={30}
+                color={theme === "dark" ? colors.white : lightColors.white}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.block}>
-          <Text style={styles.groupText}>{groupAs}</Text>
+        <View style={styles.middleContent}>
+          <Svg width={170} height={153} viewBox="0 0 170 153" fill="none">
+            <Path
+              d="M84.854 0L.563 43.707v10.436l84.29 46.827 72.251-40.137v33.25h12.041V43.708L84.854 0zm60.208 53.747l-12.042 6.69-48.166 26.76-48.167-26.76-12.041-6.69-8.346-4.636 68.554-35.547 68.554 35.547-8.346 4.636z"
+              fill="#5465FF"
+            />
+            <Path
+              d="M127 114.646l-42.146 23.707-42.146-23.707V89.599l-12.041-6.69v38.779l54.187 30.481 54.187-30.481v-38.78L127 89.599v25.048z"
+              fill="#5465FF"
+            />
+          </Svg>
+          <View style={styles.block}>
+            <Text style={styles.heading}>Ваша группа:</Text>
+          </View>
+          <View style={styles.block}>
+            <Text style={styles.groupText}>{groupAs}</Text>
+          </View>
+          <View style={styles.block}>
+            <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
+              <Text style={styles.textButton}>Расписание преподавателей</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.block}>
-          <TouchableOpacity style={styles.button} onPress={handleOpenPress}>
-            <Text style={styles.textButton}>Расписание преподавателей</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{ padding: 10, marginTop: 20 }}></View>
-        <View
-          style={{
-            position: "absolute",
-            top: 575,
-            flexDirection: "row",
-            gap: 23,
-            marginTop: 20,
-          }}
-        >
+        <View style={styles.bottomButtons}>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
@@ -369,11 +363,12 @@ export function Info({ navigation }: Props) {
 const createStyles = (theme: string, insets: InsetsInterface) =>
   StyleSheet.create({
     contentBlock: {
+      paddingHorizontal: 16,
+      paddingVertical: 16,
       backgroundColor:
         theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
       height: "100%",
-      alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "space-between",
       borderRadius: 32,
       flex: 1,
     },
@@ -466,7 +461,8 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       borderRadius: 10,
     },
     modalView: {
-      backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor:
+        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
       padding: 20,
       borderRadius: 15,
       alignItems: "center",
@@ -486,7 +482,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       fontSize: 20,
       marginBottom: 10,
       fontFamily: "Poppins-Medium",
-      color: theme === 'dark' ? colors.white : lightColors.white
+      color: theme === "dark" ? colors.white : lightColors.white,
     },
     buttonsContainer: {
       flexDirection: "row",
@@ -506,5 +502,20 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     },
     darkBackground: {
       backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    topButtons: {
+      flexDirection: "row",
+      gap: 7,
+    },
+    topButtonsContainer: {
+      alignItems: "flex-end",
+    },
+    middleContent: {
+      alignItems: "center",
+    },
+    bottomButtons: {
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 20,
     },
   });
