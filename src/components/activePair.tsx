@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import { colors, lightColors } from "../constants/colors";
 import { useAppSelector } from "../hooks/redux";
-
 
 interface Props {
   timeStart: string;
@@ -19,27 +12,27 @@ interface Props {
   adress: string;
 }
 export function ActivePair(props: Props) {
-  
-  const theme = useAppSelector(state => state.theme.theme)
-  const styles = createStyles(theme)
+  const theme = useAppSelector((state) => state.theme.theme);
+  const styles = createStyles(theme);
 
   const [isPressed, setIsPressed] = useState(2);
   return (
     <View style={styles.container}>
       <View style={styles.pair}>
         <View style={styles.time}>
-          <SafeAreaView>
-            <Text style={styles.textTime}>{props.timeStart}</Text>
-          </SafeAreaView>
-          <SafeAreaView>
-            <Text style={styles.textTime}>-</Text>
-          </SafeAreaView>
-          <SafeAreaView>
-            <Text style={styles.textTime}>{props.timeEnd}</Text>
-          </SafeAreaView>
+          <Text style={styles.textTime}>{props.timeStart}</Text>
+          <Text style={styles.textTime}>-</Text>
+          <Text style={styles.textTime}>{props.timeEnd}</Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            borderWidth: 0.7,
+            borderColor: colors.white,
+          }}
+        ></View>
         <View style={styles.pairInfo}>
-          <SafeAreaView>
+          <View>
             <TouchableWithoutFeedback
               onPress={() => {
                 if (props.subject.length > 31) {
@@ -56,93 +49,93 @@ export function ActivePair(props: Props) {
                 </Text>
               </View>
             </TouchableWithoutFeedback>
-          </SafeAreaView>
-          <SafeAreaView>
+          </View>
+          <View>
             <Text style={styles.professor}>{props.professor}</Text>
-          </SafeAreaView>
-          <SafeAreaView>
+          </View>
+          <View>
             <Text style={styles.textAdress}>{props.adress}</Text>
-          </SafeAreaView>
+          </View>
         </View>
         <View>
-          <SafeAreaView>
+          <View>
             <Text style={styles.classNum}>{props.classNum}</Text>
-          </SafeAreaView>
+          </View>
         </View>
       </View>
     </View>
   );
 }
 
-const createStyles = (theme: string) => StyleSheet.create({
-  container: { backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack},
-  pair: {
-    columnGap: 16,
-    flexDirection: "row",
-    borderRadius: 16,
-    justifyContent: "center",
-    padding: 30,
-    backgroundColor: colors.purple,
-    marginBottom: 20,
-    width: "100%",
-  },
-  text: {
-    overflow: "hidden",
-    fontSize: 19,
-    height: 60,
-    color: colors.white,
-    fontFamily: "Poppins-SemiBold",
-    marginBottom: 15,
-  },
-  pressedText: {
-    overflow: "hidden",
-    fontSize: 19,
-    fontFamily: "Poppins-SemiBold",
-    color: colors.white,
-    marginBottom: 15,
-  },
-  textTime: {
-    fontSize: 18,
-    fontFamily: "Poppins-Medium",
-    color: colors.white,
-  },
-  time: {
-    fontSize: 18,
-    alignItems: "center",
-  },
-  subProf: {
-    alignItems: "center",
-    justifyContent: "center",
-    textAlign: "justify",
-  },
-  classNum: {
-    overflow: "hidden",
-    textAlign: "center",
-    width: 100,
-    fontSize: 17,
-    fontFamily: "Poppins-Regular",
-    color: colors.textCardBlack,
-    paddingBottom: 7,
-    paddingTop: 7,
+const createStyles = (theme: string) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor:
+        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+    },
+    pair: {
+      flexDirection: "row",
+      borderRadius: 16,
+      justifyContent: "space-between",
+      paddingVertical: 30,
+      paddingHorizontal: 20,
+      backgroundColor: colors.purple,
+      marginBottom: 20,
+    },
+    text: {
+      overflow: "hidden",
+      fontSize: 19,
+      color: colors.white,
+      fontFamily: "Poppins-SemiBold",
+      marginBottom: 15,
+    },
+    pressedText: {
+      overflow: "hidden",
+      fontSize: 19,
+      fontFamily: "Poppins-SemiBold",
+      color: colors.white,
+      marginBottom: 15,
+    },
+    textTime: {
+      fontSize: 18,
+      fontFamily: "Poppins-Medium",
+      color: colors.white,
+    },
+    time: {
+      fontSize: 18,
+      alignItems: "center",
+    },
+    subProf: {
+      alignItems: "center",
+      justifyContent: "center",
+      textAlign: "justify",
+    },
+    classNum: {
+      overflow: "hidden",
+      textAlign: "center",
+      fontSize: 17,
+      fontFamily: "Poppins-Regular",
+      color: colors.textCardBlack,
+      paddingHorizontal: 14,
+      paddingVertical: 7,
 
-    backgroundColor: colors.activeClassNum,
-    borderRadius: 10,
-  },
-  textAdress: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: colors.white,
-  },
-  pairInfo: {
-    width: 190,
-    justifyContent: "center",
-    borderLeftWidth: 1,
-    borderColor: colors.white,
-    paddingLeft: 17,
-  },
-  professor: {
-    fontSize: 14,
-    fontFamily: "Poppins-Regular",
-    color: colors.white,
-  },
-});
+      backgroundColor: colors.activeClassNum,
+      borderRadius: 10,
+    },
+    textAdress: {
+      fontSize: 14,
+      fontFamily: "Poppins-Regular",
+      color: colors.white,
+    },
+    pairInfo: {
+      width: 170,
+      justifyContent: "center",
+
+      borderColor: colors.white,
+    },
+    professor: {
+      fontSize: 14,
+      fontFamily: "Poppins-Regular",
+      color: colors.white,
+    },
+  });

@@ -69,7 +69,7 @@ export function Info({ navigation }: Props) {
     return theme === "dark" ? (
       <Feather name="sun" size={30} color="white" />
     ) : (
-      <Feather name="moon" size={30} color="black" />
+      <Feather name="moon" size={30} color="white" />
     );
   }
 
@@ -90,7 +90,7 @@ export function Info({ navigation }: Props) {
   const group = useAppSelector((state) => state.group.value);
 
   async function getProfessors() {
-    const response = await fetch("https://api.rosggram.ru/getProfessors", {
+    const response = await fetch("https://oh.sssh.it/getProfessors", {
       headers: {
         token:
           "hHc7JIv3EMPd27w2mES5DuZ1jIU3AR1EC6fW0901AqXhuxp0cMu16THKGJuh2yBW",
@@ -187,7 +187,7 @@ export function Info({ navigation }: Props) {
               <MaterialIcons
                 name="exit-to-app"
                 size={30}
-                color={theme === "dark" ? colors.white : lightColors.white}
+                color={colors.white}
               />
             </TouchableOpacity>
           </View>
@@ -403,12 +403,13 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       justifyContent: "center",
     },
     buttonBS: {
-      width: 175,
       height: 78,
       backgroundColor: theme === "dark" ? colors.purple : lightColors.purple,
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
+      width: 165,
+      padding: 10,
       margin: 10,
     },
     buttonBSText: {

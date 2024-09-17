@@ -12,24 +12,33 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.puggs.mySchedule"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.puggs.mySchedule"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       [
-      "expo-font",
-      {
-        "fonts": ["./assets/fonts/Poppins-Bold.ttf"]
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Poppins-Bold.ttf"
+          ]
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "ceb55084-a71f-4b14-9932-86a59ec5b3af"
       }
-    ]
-  ]
+    }
   }
 }

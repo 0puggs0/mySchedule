@@ -16,49 +16,50 @@ import { getDayOfWeek } from "../utils/getDayOfWeek";
 interface InitialValue {
   schedule: ScheduleArrayInterface;
   professorSchedule: ListProfessorSchedule[];
-  professorScheduleLoading: boolean,
-  scheduleLoading: boolean
+  professorScheduleLoading: boolean;
+  scheduleLoading: boolean;
 }
-const initialValue: InitialValue = { schedule: [], professorSchedule: [], professorScheduleLoading: false, scheduleLoading: false };
+const initialValue: InitialValue = {
+  schedule: [],
+  professorSchedule: [],
+  professorScheduleLoading: false,
+  scheduleLoading: false,
+};
 
 export const scheduleSlice = createSlice({
   name: "scheduleSlice",
   initialState: initialValue,
   reducers: {
-    setSchedule: (
-      state,
-      action: PayloadAction<ScheduleArrayInterface>
-    ) => {
+    setSchedule: (state, action: PayloadAction<ScheduleArrayInterface>) => {
       state.schedule = action.payload;
     },
     setProfessorSchedule: (
       state,
-      action: PayloadAction<ListProfessorSchedule[]>
+      action: PayloadAction<ListProfessorSchedule[]>,
     ) => {
       state.professorSchedule = action.payload;
     },
   },
   extraReducers(builder) {
     builder.addCase(getSchedule.fulfilled, (state, payload) => {
-      state.schedule = payload.payload,
-      state.scheduleLoading = false
+      (state.schedule = payload.payload), (state.scheduleLoading = false);
     }),
-    builder.addCase(getSchedule.pending, (state) => {
-      state.scheduleLoading = true
-    }),
-    builder.addCase(getSchedule.rejected, (state) => {
-      state.scheduleLoading = false
-    }),
+      builder.addCase(getSchedule.pending, (state) => {
+        state.scheduleLoading = true;
+      }),
+      builder.addCase(getSchedule.rejected, (state) => {
+        state.scheduleLoading = false;
+      }),
       builder.addCase(getProfessorSchedule.fulfilled, (state, payload) => {
         state.professorSchedule = payload.payload;
-        state.professorScheduleLoading = false
+        state.professorScheduleLoading = false;
       }),
       builder.addCase(getProfessorSchedule.pending, (state) => {
-        state.professorScheduleLoading = true
-      }), 
+        state.professorScheduleLoading = true;
+      }),
       builder.addCase(getProfessorSchedule.rejected, (state) => {
-        state.professorScheduleLoading = false
-      })
+        state.professorScheduleLoading = false;
+      });
   },
 });
 export const { setSchedule } = scheduleSlice.actions;
@@ -77,9 +78,9 @@ export const getSchedule = createAsyncThunk(
     try {
       const group = await AsyncStorage.getItem("group");
       const response = await fetch(
-        `https://api.rosggram.ru/schedule/${group}/${
+        `https://oh.sssh.it/schedule/${group}/${
           (payload as Payload).getState().week.week
-        }`
+        }`,
       );
       const schedule: ScheduleType = await response.json();
 
@@ -120,19 +121,21 @@ export const getSchedule = createAsyncThunk(
       return sortSchedule;
     } catch (e) {
       console.error("Ошибка при получении расписания:", e);
-      return []
+      return [];
     }
-  }
+  },
 );
 export const getProfessorSchedule = createAsyncThunk(
-
   "расписание преподавателя",
-  async ({professorKey, week}:{professorKey: string, week: string | number}, thunkAPI) => {
-    console.log(week)
+  async (
+    { professorKey, week }: { professorKey: string; week: string | number },
+    thunkAPI,
+  ) => {
+    console.log(week);
     try {
       // const group = await AsyncStorage.getItem('group')
       const response = await fetch(
-        `https://api.rosggram.ru/professorSchedule/${professorKey}/${week}`
+        `https://oh.sssh.it/professorSchedule/${professorKey}/${week}`,
       );
       const professorSchedule: ProfessorScheduleType = await response.json();
       professorSchedule.professors.sort((a, b) => {
@@ -174,8 +177,8 @@ export const getProfessorSchedule = createAsyncThunk(
             break;
         }
       });
-      newProfessorSchedule.forEach(item => {
-        item.data.sort((a,b) => {
+      newProfessorSchedule.forEach((item) => {
+        item.data.sort((a, b) => {
           if (a.timeStart > b.timeStart) {
             return 1;
           }
@@ -183,12 +186,12 @@ export const getProfessorSchedule = createAsyncThunk(
             return -1;
           }
           return 0;
-        })
-      })
+        });
+      });
       return newProfessorSchedule;
     } catch (e) {
       console.error("Ошибка при получении расписания преподавателя:", e);
-      return []
+      return [];
     }
-  }
+  },
 );

@@ -92,11 +92,12 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     },
     contentBlock: {
       backgroundColor:
-      theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
       height: "100%",
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 32,
+      paddingHorizontal: 10,
       flex: 1,
     },
     topHeading: {
@@ -120,7 +121,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       marginTop: 17,
     },
     image: {
-      width: 375,
+      width: "100%",
       height: 160,
       borderRadius: 16,
       marginBottom: 10,
@@ -128,7 +129,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     cardTitle: {
       marginBottom: 7,
       fontSize: 16,
-      width: 356,
+
       fontFamily: "Poppins-Medium",
       color: colors.newsCardTitle,
     },
@@ -140,7 +141,6 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     cardButton: {
       overflow: "hidden",
       textAlign: "center",
-      width: 110,
       padding: 10,
       color: theme === "dark" ? colors.gray : lightColors.gray,
       backgroundColor: colors.purple,
