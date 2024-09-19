@@ -54,12 +54,26 @@ export function ActivePair(props: Props) {
             <Text style={styles.professor}>{props.professor}</Text>
           </View>
           <View>
-            <Text style={styles.textAdress}>{props.adress}</Text>
+            <Text style={styles.textAdress}>
+              {props.adress !== "" ? props.adress : "Дистанционно"}
+            </Text>
           </View>
         </View>
         <View>
           <View>
-            <Text style={styles.classNum}>{props.classNum}</Text>
+            {props.adress !== "" ? (
+              <Text style={styles.textAdress}>{props.adress}</Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: "Poppins-Bold",
+                  color: colors.textCardBlack,
+                }}
+              >
+                Дистанционно
+              </Text>
+            )}{" "}
           </View>
         </View>
       </View>

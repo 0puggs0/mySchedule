@@ -54,7 +54,19 @@ export function Pair(props: Props) {
             <Text style={styles.professor}>{props.professor}</Text>
           </View>
           <View>
-            <Text style={styles.textAdress}>{props.adress}</Text>
+            {props.adress !== "" ? (
+              <Text style={styles.textAdress}>{props.adress}</Text>
+            ) : (
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontFamily: "Poppins-Bold",
+                  color: colors.textCardBlack,
+                }}
+              >
+                Дистанционно
+              </Text>
+            )}
           </View>
         </View>
         <View>

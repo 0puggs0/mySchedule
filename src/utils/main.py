@@ -173,9 +173,6 @@ def get_all_data(url, name_group) -> list:
         all_data.append(dict_all_data_page)
     return all_data
 
-# def task_wrapper(name_groups, url):
-#     return get_all_data(url, name_groups)
-
 all_groups = get_name_groups()
 print(len(all_groups))
 print(all_groups)
@@ -188,7 +185,6 @@ for i, group in enumerate(all_groups):
     name_groups = group[0]
     hm = [name_groups for _ in range(len(urls))]
     with ThreadPoolExecutor(max_workers=7) as executor:
-       # result = executor.map(task_wrapper, urls)
         result = executor.map(get_all_data, urls, hm)
 
     result = list(result)
@@ -201,14 +197,4 @@ for i, group in enumerate(all_groups):
     print('Данные записаны', i)
 
 
-# min_week = 139
-# max_week = 286
-
-# for group in all_groups:
-#     second_json = []
-#     for i in range(min_week, max_week + 1):
-#         second_json.append({'week': i, 'key': group[1]})
-
-#     with open(f'{group[0]}-group.json', 'w', encoding='utf-8') as f:
-#         json.dump(second_json, f, ensure_ascii=False, indent=4)
 
