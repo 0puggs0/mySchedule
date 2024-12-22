@@ -10,24 +10,23 @@ import React, { useState } from "react";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
-import { setGroup } from "../store/groupSlice";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getSchedule } from "../store/scheduleSlice";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { colors, lightColors } from "../constants/colors";
+import useColors, { Colors } from "../constants/colors";
+import groupStore from "../store/groupStore";
+import ScheduleStore from "../store/scheduleStore";
+import { observer } from "mobx-react-lite";
 
-export function Login() {
-  const theme = useAppSelector((state) => state.theme.theme);
-  const styles = createStyles(theme);
-
-  const insets = useSafeAreaInsets();
-
-  const navigation = useNavigation();
+export const Login = observer(() => {
   const [inputValue, setInputValue] = useState("");
-  const dispatch = useAppDispatch();
+  const { setGroup } = groupStore;
+  const { getSchedule } = ScheduleStore;
 
-  // Функция, которая преобразует значение инпута в значение, которое не чувствительно к регистру и записывает инпут в глобальное redux состояние
+  const colors = useColors();
+  const styles = createStyles(colors);
+  const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+
   const submitGroup = () => {
     const processedInputArray = inputValue.split("");
     for (let i = 0; i < processedInputArray.length; i++) {
@@ -37,15 +36,13 @@ export function Login() {
       processedInputArray[i] = processedInputArray[i].toUpperCase();
     }
     const processedInput = processedInputArray.join("");
-    dispatch(setGroup(processedInput));
-
-    // Проверка, существует ли данная группа в базе данных?
     fetch(`https://oh.sssh.it/searchGroup/${processedInput}`)
       .then((response) => {
         if (response.status < 300) {
           AsyncStorage.setItem("group", processedInput);
+          setGroup(processedInput);
           return response.json().then(() => {
-            dispatch(getSchedule());
+            getSchedule();
             navigation.navigate("Schedule" as never);
           });
         } else {
@@ -63,7 +60,7 @@ export function Login() {
         height: "100%",
         flexDirection: "column",
         justifyContent: "space-between",
-        backgroundColor: theme === "dark" ? colors.black : lightColors.black,
+        backgroundColor: colors.black,
         paddingTop: insets.top,
         paddingBottom: insets.bottom,
       }}
@@ -87,11 +84,7 @@ export function Login() {
           <Ionicons
             name="checkmark-sharp"
             size={36}
-            color={
-              theme === "dark"
-                ? colors.submitInputColor
-                : lightColors.submitInputColor
-            }
+            color={colors.submitInputColor}
           />
         </TouchableOpacity>
       </View>
@@ -102,57 +95,54 @@ export function Login() {
       </View>
     </View>
   );
-}
+});
 
-const createStyles = (theme: string) =>
+const createStyles = (colors: Colors) =>
   StyleSheet.create({
     main: {
       alignItems: "center",
     },
     heading: {
       fontSize: 16,
-      color: theme === "dark" ? colors.gray : lightColors.gray,
+      color: colors.gray,
       fontFamily: "Poppins-Medium",
     },
     input: {
       width: 300,
       height: 70,
       borderRadius: 8,
-      backgroundColor:
-        theme === "dark" ? colors.inputBlack : lightColors.inputBlack,
+      backgroundColor: colors.inputBlack,
       textAlign: "center",
       alignItems: "center",
       justifyContent: "center",
       marginBottom: 17,
     },
-
     text: {
-      color: theme === "dark" ? colors.gray : lightColors.gray,
+      color: colors.gray,
       fontFamily: "Poppins-Medium",
       fontSize: 20,
     },
     h1: {
-      color: theme === "dark" ? colors.semiWhite : lightColors.semiWhite,
+      color: colors.semiWhite,
       fontFamily: "Poppins-Medium",
       fontSize: 52,
       marginBottom: 20,
     },
     textInput: {
       fontSize: 25,
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       fontFamily: "Poppins-SemiBold",
     },
     button: {
       width: 120,
       height: 50,
-      backgroundColor:
-        theme === "dark" ? colors.inputBlack : lightColors.inputBlack,
+      backgroundColor: colors.inputBlack,
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
     },
     title: {
-      color: theme === "dark" ? colors.gray : lightColors.gray,
+      color: colors.gray,
       fontFamily: "Poppins-Medium",
       fontSize: 20,
       marginBottom: 6,

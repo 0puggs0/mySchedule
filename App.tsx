@@ -3,12 +3,8 @@ import { StyleSheet, View } from "react-native";
 import "react-native-gesture-handler";
 import { MyStack } from "./src/navigation/mainStack";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Provider } from "react-redux";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { setupStore } from "./src/store/store";
 import { useFonts } from "expo-font";
-
-const store = setupStore();
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -24,13 +20,11 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <Provider store={store}>
-        <GestureHandlerRootView>
-          <View style={styles.container}>
-            <MyStack></MyStack>
-          </View>
-        </GestureHandlerRootView>
-      </Provider>
+      <GestureHandlerRootView>
+        <View style={styles.container}>
+          <MyStack></MyStack>
+        </View>
+      </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 }

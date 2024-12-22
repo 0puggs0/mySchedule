@@ -8,12 +8,11 @@ import {
   Image,
   Linking,
 } from "react-native";
-import { colors, lightColors } from "../constants/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import dayjs from "dayjs";
 import vkPosts from "../data/vk_posts.json";
-import { useAppSelector } from "../hooks/redux";
 import { InsetsInterface } from "../API/apiInterface";
+import useColors, { Colors } from "../constants/colors";
 
 interface VkPost {
   text: string;
@@ -23,9 +22,9 @@ interface VkPost {
 }
 
 export function News() {
+  const colors = useColors();
   const insets = useSafeAreaInsets();
-  const theme = useAppSelector((state) => state.theme.theme);
-  const styles = createStyles(theme, insets);
+  const styles = createStyles(colors, insets);
 
   const data1: VkPost[] = vkPosts;
   data1.sort((a, b) => {
@@ -41,7 +40,7 @@ export function News() {
     <View
       style={{
         flex: 1,
-        backgroundColor: theme === "dark" ? colors.black : lightColors.black,
+        backgroundColor: colors.black,
       }}
     >
       <View style={styles.topHeading}>
@@ -85,14 +84,13 @@ export function News() {
   );
 }
 
-const createStyles = (theme: string, insets: InsetsInterface) =>
+const createStyles = (colors: Colors, insets: InsetsInterface) =>
   StyleSheet.create({
     container: {
       flex: 1,
     },
     contentBlock: {
-      backgroundColor:
-        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor: colors.semiBlack,
       height: "100%",
       alignItems: "center",
       justifyContent: "center",
@@ -107,13 +105,13 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     },
     topHeadingText: {
       textAlign: "center",
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       fontFamily: "Poppins-Medium",
       fontSize: 30,
       paddingTop: insets.top,
     },
     card: {
-      backgroundColor: theme === "dark" ? colors.gray : lightColors.gray,
+      backgroundColor: colors.gray,
       borderRadius: 16,
       paddingVertical: 15,
       paddingHorizontal: 10,
@@ -142,7 +140,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       overflow: "hidden",
       textAlign: "center",
       padding: 10,
-      color: theme === "dark" ? colors.gray : lightColors.gray,
+      color: colors.gray,
       backgroundColor: colors.purple,
       borderRadius: 8,
     },

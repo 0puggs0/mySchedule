@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
-import { colors, lightColors } from "../constants/colors";
-import { useAppSelector } from "../hooks/redux";
+import useColors, { Colors } from "../constants/colors";
 
 interface Props {
   timeStart: string;
@@ -12,8 +11,8 @@ interface Props {
   adress: string;
 }
 export function Pair(props: Props) {
-  const theme = useAppSelector((state) => state.theme.theme);
-  const styles = createStyles(theme);
+  const colors = useColors();
+  const styles = createStyles(colors);
 
   const [isPressed, setIsPressed] = useState(2);
   return (
@@ -24,13 +23,7 @@ export function Pair(props: Props) {
           <Text style={styles.textTime}>-</Text>
           <Text style={styles.textTime}>{props.timeEnd}</Text>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            borderWidth: 0.7,
-            borderColor: colors.textCardBlack,
-          }}
-        ></View>
+        <View style={styles.borderBottom}></View>
         <View style={styles.pairInfo}>
           <View>
             <TouchableWithoutFeedback
@@ -79,11 +72,10 @@ export function Pair(props: Props) {
   );
 }
 
-const createStyles = (theme: string) =>
+const createStyles = (colors: Colors) =>
   StyleSheet.create({
     container: {
-      backgroundColor:
-        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor: colors.semiBlack,
     },
     pair: {
       flexDirection: "row",
@@ -147,5 +139,10 @@ const createStyles = (theme: string) =>
       fontSize: 14,
       fontFamily: "Poppins-Regular",
       color: colors.textCardBlack,
+    },
+    borderBottom: {
+      flexDirection: "row",
+      borderWidth: 1,
+      borderColor: colors.textCardBlack,
     },
   });

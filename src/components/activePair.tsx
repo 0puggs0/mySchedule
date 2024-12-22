@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
-import { colors, lightColors } from "../constants/colors";
 import { useAppSelector } from "../hooks/redux";
+import useColors, { Colors } from "../constants/colors";
 
 interface Props {
   timeStart: string;
@@ -12,8 +12,8 @@ interface Props {
   adress: string;
 }
 export function ActivePair(props: Props) {
-  const theme = useAppSelector((state) => state.theme.theme);
-  const styles = createStyles(theme);
+  const colors = useColors();
+  const styles = createStyles(colors);
 
   const [isPressed, setIsPressed] = useState(2);
   return (
@@ -24,13 +24,7 @@ export function ActivePair(props: Props) {
           <Text style={styles.textTime}>-</Text>
           <Text style={styles.textTime}>{props.timeEnd}</Text>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            borderWidth: 0.7,
-            borderColor: colors.white,
-          }}
-        ></View>
+        <View style={styles.borderBottom}></View>
         <View style={styles.pairInfo}>
           <View>
             <TouchableWithoutFeedback
@@ -61,19 +55,9 @@ export function ActivePair(props: Props) {
         </View>
         <View>
           <View>
-            {props.adress !== "" ? (
-              <Text style={styles.textAdress}>{props.adress}</Text>
-            ) : (
-              <Text
-                style={{
-                  fontSize: 14,
-                  fontFamily: "Poppins-Bold",
-                  color: colors.textCardBlack,
-                }}
-              >
-                Дистанционно
-              </Text>
-            )}{" "}
+            <Text style={styles.classNum}>
+              {props.classNum === "Спортзал" ? "Зал" : props.classNum}
+            </Text>
           </View>
         </View>
       </View>
@@ -81,11 +65,10 @@ export function ActivePair(props: Props) {
   );
 }
 
-const createStyles = (theme: string) =>
+const createStyles = (colors: Colors) =>
   StyleSheet.create({
     container: {
-      backgroundColor:
-        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor: colors.semiBlack,
     },
     pair: {
       flexDirection: "row",
@@ -151,5 +134,10 @@ const createStyles = (theme: string) =>
       fontSize: 14,
       fontFamily: "Poppins-Regular",
       color: colors.white,
+    },
+    borderBottom: {
+      flexDirection: "row",
+      borderWidth: 1,
+      borderColor: colors.white,
     },
   });

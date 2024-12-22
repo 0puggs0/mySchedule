@@ -2,56 +2,51 @@ import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Pair } from "../components/pair";
 import { RootStackParamList } from "../API/apiInterface";
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { FlatList } from "react-native-gesture-handler";
 import { days } from "../constants/days";
-import { getSchedule } from "../store/scheduleSlice";
 import type { StackScreenProps } from "@react-navigation/stack";
-import { colors, lightColors } from "../constants/colors";
 import { Day } from "../types/schedule";
 import dayjs from "dayjs";
 import { ActivePair } from "../components/activePair";
+import useColors, { Colors } from "../constants/colors";
+import scheduleStore from "../store/scheduleStore";
+import dateStore from "../store/dateStore";
+import groupStore from "../store/groupStore";
+import { observer } from "mobx-react-lite";
 
 export type Props = StackScreenProps<RootStackParamList, Day>;
-export const Schedule = ({ route, navigation }: Props) => {
+export const Schedule = observer(({ route, navigation }: Props) => {
+  const colors = useColors();
 
-  const theme = useAppSelector(state => state.theme.theme)
-  const styles = createStyles(theme)
+  const styles = createStyles(colors);
 
-  const [nowDate, setNowDate] = useState(dayjs().format('DD.MM.YYYY'));
-  const [nowHour, setNowHour] = useState(dayjs().format('HH:mm'));
+  const [nowDate, setNowDate] = useState(dayjs().format("DD.MM.YYYY"));
+  const [nowHour, setNowHour] = useState(dayjs().format("HH:mm"));
 
   useEffect(() => {
     const timeout = setInterval(() => {
-      setNowDate(dayjs().format('DD.MM.YYYY'))
-      setNowHour(dayjs().format('HH:mm'))
-    }, 60000)
-    return () => clearInterval(timeout)
-  }, [])
-
-  const dispatch = useAppDispatch();
-  const { schedule, scheduleLoading } = useAppSelector(
-    (state) => state.schedule,
-  );
-  const week = useAppSelector((state) => state.week.week);
-  const day = useAppSelector((state) => state.week.day);
-  const group = useAppSelector((state) => state.group.value);
+      setNowDate(dayjs().format("DD.MM.YYYY"));
+      setNowHour(dayjs().format("HH:mm"));
+    }, 60000);
+    return () => clearInterval(timeout);
+  }, []);
+  const { schedule, scheduleIsLoading, getSchedule } = scheduleStore;
+  const { day, week } = dateStore;
+  const { group } = groupStore;
 
   useEffect(() => {
     if (route.name === "Пн") {
-      dispatch(getSchedule());
+      getSchedule();
     }
-  }, [week,group]);
+  }, [week, group]);
   useEffect(() => {
     if (route.name === "Пн") {
-    navigation.navigate(`${day}`);
+      navigation.navigate(`${day}`);
     }
-  }, [day])
-  if (scheduleLoading) {
+  }, [day]);
+  if (scheduleIsLoading) {
     return (
-      <View
-        style={styles.container}
-      >
+      <View style={styles.container}>
         <ActivityIndicator size="large"></ActivityIndicator>
       </View>
     );
@@ -66,7 +61,7 @@ export const Schedule = ({ route, navigation }: Props) => {
             style={{
               textAlign: "center",
               fontFamily: "Poppins-Medium",
-              color: theme === 'dark' ? colors.white : lightColors.white,
+              color: colors.white,
               fontSize: 30,
             }}
           >
@@ -76,36 +71,39 @@ export const Schedule = ({ route, navigation }: Props) => {
         data={schedule?.[days[route.name]]}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => 
-          item.date === nowDate && 
-          nowHour >= item.timeStart && nowHour <= item.timeEnd ?
-          (
-          <ActivePair
-            timeStart={item.timeStart}
-            timeEnd={item.timeEnd}
-            subject={item.subject.name}
-            professor={item.professor.name}
-            classNum={item.room.auditory ? item.room.auditory : "-"}
-            adress={item.room.name}
-          />
-        ) :
-      (
-        <Pair timeStart={item.timeStart}
-        timeEnd={item.timeEnd}
-        subject={item.subject.name}
-        professor={item.professor.name}
-        classNum={item.room.auditory ? item.room.auditory : "-"}
-        adress={item.room.name}/>
-      )}
+        renderItem={({ item }) =>
+          item.date === nowDate &&
+          nowHour >= item.timeStart &&
+          nowHour <= item.timeEnd ? (
+            <ActivePair
+              timeStart={item.timeStart}
+              timeEnd={item.timeEnd}
+              subject={item.subject.name}
+              professor={item.professor.name}
+              classNum={item.room.auditory ? item.room.auditory : "-"}
+              adress={item.room.name}
+            />
+          ) : (
+            <Pair
+              timeStart={item.timeStart}
+              timeEnd={item.timeEnd}
+              subject={item.subject.name}
+              professor={item.professor.name}
+              classNum={item.room.auditory ? item.room.auditory : "-"}
+              adress={item.room.name}
+            />
+          )
+        }
       />
     </View>
   );
-};
-
-const createStyles = (theme: string) => StyleSheet.create({
-  container: {
-    backgroundColor: theme === 'dark' ? colors.semiBlack : lightColors.semiBlack,
-    flex: 1,
-    paddingHorizontal: 8,
-  },
 });
+
+const createStyles = (colors: Colors) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.semiBlack,
+      flex: 1,
+      paddingHorizontal: 8,
+    },
+  });

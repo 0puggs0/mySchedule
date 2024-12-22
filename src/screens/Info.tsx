@@ -6,15 +6,8 @@ import {
   MaterialCommunityIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
 import Svg, { Path } from "react-native-svg";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -28,95 +21,44 @@ import {
   StatusBar,
 } from "react-native";
 
-import { useAppDispatch, useAppSelector } from "../hooks/redux";
 import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import {
-  BottomSheetBackdrop,
-  BottomSheetBackdropProps,
-  BottomSheetModal,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors, lightColors } from "../constants/colors";
-import { setTheme } from "../store/themeSlice";
 import { InsetsInterface } from "../API/apiInterface";
+import useColors, { Colors } from "../constants/colors";
+import useModalInfo from "../hooks/useModalInfo";
+import useSwitchColorTheme from "../hooks/useSwitchColorTheme";
+import useProfessors from "../hooks/useProfessors";
+import { renderBackdrop } from "../components/backdrop";
+import groupStore from "../store/groupStore";
+import { observer } from "mobx-react-lite";
+import themeStore from "../store/themeStore";
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
-interface ItemType {
-  name: string;
-  id: string;
-}
 
-export function Info({ navigation }: Props) {
-  const [showModal, setShowModal] = useState(false);
+export const Info = observer(({ navigation }: Props) => {
+  const { theme } = themeStore;
+  const { group } = groupStore;
 
-  const handleExit = () => {
-    setShowModal(true);
-  };
+  const colors = useColors();
+  const { handleCancelExit, handleConfirmExit, handleExit, showModal } =
+    useModalInfo();
+  const { ChangeThemeIcon, toggleSwitch } = useSwitchColorTheme();
+  const {
+    filtered,
+    handleClose,
+    handleOpenPress,
+    bottomSheetRef,
+    searchText,
+    setSearchText,
+  } = useProfessors();
 
-  const handleConfirmExit = async () => {
-    setShowModal(false);
-    await AsyncStorage.clear();
-    navigation.navigate("Login");
-  };
-
-  const handleCancelExit = () => {
-    setShowModal(false);
-  };
-
-  function ChangeThemeIcon() {
-    return theme === "dark" ? (
-      <Feather name="sun" size={30} color="white" />
-    ) : (
-      <Feather name="moon" size={30} color="white" />
-    );
-  }
-
-  const dispatch = useAppDispatch();
   const insets = useSafeAreaInsets();
-  const theme = useAppSelector((state) => state.theme.theme);
-  const styles = useMemo(() => createStyles(theme, insets), [theme]);
 
-  const toggleSwitch = () => {
-    theme == "dark" ? dispatch(setTheme("light")) : dispatch(setTheme("dark"));
-  };
-
-  useEffect(() => {
-    AsyncStorage.setItem("theme", theme);
-  }, [theme]);
+  const styles = useMemo(() => createStyles(colors, insets), [theme]);
 
   const [groupAs, setGroupAs] = useState("");
-  const group = useAppSelector((state) => state.group.value);
-
-  async function getProfessors() {
-    const response = await fetch("https://oh.sssh.it/getProfessors", {
-      headers: {
-        token:
-          "hHc7JIv3EMPd27w2mES5DuZ1jIU3AR1EC6fW0901AqXhuxp0cMu16THKGJuh2yBW",
-      },
-    });
-    const json = await response.json();
-    setFilteredData(json.professors);
-  }
-
-  const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
-
-  const filtered = useMemo(() => {
-    if (Array.isArray(filteredData)) {
-      const newData = filteredData.filter((item: ItemType) => {
-        if (item.name.toLowerCase().includes(searchText.toLowerCase())) {
-          return true;
-        }
-      });
-      return newData;
-    } else {
-      return [];
-    }
-  }, [searchText, filteredData]);
-
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     const fetchGroup = async () => {
@@ -125,35 +67,17 @@ export function Info({ navigation }: Props) {
         setGroupAs(groupValue);
       }
     };
-
     fetchGroup();
   }, []);
   useEffect(() => {
     setGroupAs(group);
   }, [group]);
 
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        {...props}
-      />
-    ),
-    [],
-  );
-  const handleOpenPress = () => {
-    getProfessors();
-    bottomSheetRef.current?.present();
-  };
-  const handleClose = () => {
-    bottomSheetRef.current?.dismiss();
-  };
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: theme === "dark" ? colors.black : lightColors.black,
+        backgroundColor: colors.black,
       }}
     >
       <StatusBar
@@ -220,51 +144,38 @@ export function Info({ navigation }: Props) {
             onPress={() => Linking.openURL("https://t.me/ilushablz")}
             style={{
               padding: 13,
-              backgroundColor:
-                theme === "dark" ? colors.black : lightColors.black,
+              backgroundColor: colors.black,
               borderRadius: 8,
             }}
           >
             <FontAwesome5
               name="telegram-plane"
               size={28}
-              color={
-                theme === "dark" ? colors.semiWhite : lightColors.semiWhite
-              }
+              color={colors.semiWhite}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://vk.com/kspsuti.samara")}
             style={{
               padding: 13,
-              backgroundColor:
-                theme === "dark" ? colors.black : lightColors.black,
+              backgroundColor: colors.black,
               borderRadius: 8,
             }}
           >
-            <Entypo
-              name="vk"
-              size={28}
-              color={
-                theme === "dark" ? colors.semiWhite : lightColors.semiWhite
-              }
-            />
+            <Entypo name="vk" size={28} color={colors.semiWhite} />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => Linking.openURL("https://ks.psuti.ru/")}
             style={{
               padding: 13,
-              backgroundColor:
-                theme === "dark" ? colors.black : lightColors.black,
+              backgroundColor: colors.black,
               borderRadius: 8,
             }}
           >
             <MaterialCommunityIcons
               name="web"
               size={28}
-              color={
-                theme === "dark" ? colors.semiWhite : lightColors.semiWhite
-              }
+              color={colors.semiWhite}
             />
           </TouchableOpacity>
         </View>
@@ -276,20 +187,13 @@ export function Info({ navigation }: Props) {
         enablePanDownToClose={true}
         snapPoints={["85%"]}
         backgroundStyle={{
-          backgroundColor:
-            theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+          backgroundColor: colors.semiBlack,
         }}
       >
         <BottomSheetView style={styles.bottomSheetContainer}>
           <Text style={styles.bottomSheetHeading}>Выберите преподавателя:</Text>
           <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-            <AntDesign
-              name="close"
-              size={23}
-              color={
-                theme === "dark" ? colors.semiBlack : lightColors.semiBlack
-              }
-            />
+            <AntDesign name="close" size={23} color={colors.semiBlack} />
           </TouchableOpacity>
           <TextInput
             style={styles.input}
@@ -302,7 +206,7 @@ export function Info({ navigation }: Props) {
             contentContainerStyle={{ paddingBottom: 200 }}
             data={filtered}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }: { item: ItemType }) => (
+            renderItem={({ item }) => (
               <TouchableOpacity
                 style={styles.buttonBS}
                 onPress={() => {
@@ -316,7 +220,7 @@ export function Info({ navigation }: Props) {
                 <Text style={styles.buttonBSText}>{item.name}</Text>
               </TouchableOpacity>
             )}
-            keyExtractor={(item: ItemType) => item.id}
+            keyExtractor={(item: { name: string; id: string }) => item.id}
             numColumns={2}
           />
         </BottomSheetView>
@@ -359,14 +263,14 @@ export function Info({ navigation }: Props) {
       </Modal>
     </View>
   );
-}
-const createStyles = (theme: string, insets: InsetsInterface) =>
+});
+
+const createStyles = (colors: Colors, insets: InsetsInterface) =>
   StyleSheet.create({
     contentBlock: {
       paddingHorizontal: 16,
       paddingVertical: 16,
-      backgroundColor:
-        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor: colors.semiBlack,
       height: "100%",
       justifyContent: "space-between",
       borderRadius: 32,
@@ -379,32 +283,32 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     },
     topHeadingText: {
       textAlign: "center",
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       fontFamily: "Poppins-Medium",
       fontSize: 30,
       paddingTop: insets.top,
     },
     heading: {
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       fontFamily: "Poppins-Medium",
       fontSize: 38,
     },
     groupText: {
-      color: theme === "dark" ? colors.semiWhite : lightColors.semiWhite,
+      color: colors.semiWhite,
       fontFamily: "Poppins-Medium",
       fontSize: 30,
     },
     button: {
       width: 307,
       height: 47,
-      backgroundColor: theme === "dark" ? colors.purple : lightColors.purple,
+      backgroundColor: colors.purple,
       borderRadius: 8,
       alignItems: "center",
       justifyContent: "center",
     },
     buttonBS: {
       height: 78,
-      backgroundColor: theme === "dark" ? colors.purple : lightColors.purple,
+      backgroundColor: colors.purple,
       borderRadius: 10,
       alignItems: "center",
       justifyContent: "center",
@@ -419,7 +323,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       fontSize: 16,
     },
     textButton: {
-      color: theme === "dark" ? colors.textButtonColor : colors.textButtonColor,
+      color: colors.textButtonColor,
       fontFamily: "Poppins-Medium",
       fontSize: 20,
     },
@@ -435,7 +339,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
     bottomSheetHeading: {
       fontSize: 24,
       textAlign: "center",
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       maxWidth: 210,
       fontFamily: "Poppins-Bold",
     },
@@ -443,27 +347,23 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       width: 290,
       borderRadius: 8,
       height: 60,
-      backgroundColor:
-        theme === "dark"
-          ? colors.bottomSheetInputColor
-          : lightColors.bottomSheetInputColor,
+      backgroundColor: colors.bottomSheetInputColor,
       textAlign: "center",
       fontSize: 20,
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
       fontFamily: "Poppins-Medium",
       alignItems: "center",
       justifyContent: "center",
     },
     closeButton: {
-      backgroundColor: theme === "dark" ? colors.purple : lightColors.purple,
+      backgroundColor: colors.purple,
       padding: 10,
       position: "absolute",
       right: 20,
       borderRadius: 10,
     },
     modalView: {
-      backgroundColor:
-        theme === "dark" ? colors.semiBlack : lightColors.semiBlack,
+      backgroundColor: colors.semiBlack,
       padding: 20,
       borderRadius: 15,
       alignItems: "center",
@@ -483,7 +383,7 @@ const createStyles = (theme: string, insets: InsetsInterface) =>
       fontSize: 20,
       marginBottom: 10,
       fontFamily: "Poppins-Medium",
-      color: theme === "dark" ? colors.white : lightColors.white,
+      color: colors.white,
     },
     buttonsContainer: {
       flexDirection: "row",
